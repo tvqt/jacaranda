@@ -6,6 +6,16 @@ require 'rest-client'
 require 'JSON'
 require "active_support/all"
 
+def post_message_to_slack(text)
+  request_body = {
+    channel: "#bottesting",
+    username: "webhookbot",
+    text: text
+  }
+
+  RestClient.post(ENV["SLACK_CHANNEL_WEBHOOK_URL"], request_body.to_json)
+end
+
 # Get the data
 planningalerts_subscribers_data = JSON.parse(
   RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
@@ -35,14 +45,3 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
     ScraperWiki.save_sqlite([:date_posted], {date_posted: Date.today.to_s, text: text})
   end
 end
-
-def post_message_to_slack(text)
-  request_body = {
-    channel: "#bottesting",
-    username: "webhookbot",
-    text: text
-  }
-
-  RestClient.post(ENV["SLACK_CHANNEL_WEBHOOK_URL"], request_body.to_json)
-end
-
