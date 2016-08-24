@@ -6,7 +6,7 @@ require 'rest-client'
 require 'JSON'
 
 # Get the data
-planningAlerts_subscribers_data = JSON.parse(
+planningalerts_subscribers_data = JSON.parse(
   RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
 )
 # build the sentence with new sign up stats
