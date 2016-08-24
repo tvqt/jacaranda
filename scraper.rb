@@ -27,8 +27,14 @@ end
 # build the sentence with new sign up stats
 text = new_signups_last_fortnight.to_s +
        " people signed up for PlanningAlerts last fortnight."
-# post it fortnightly
-post_message_to_slack(text)
+
+# if it's been a fortnight since the last message post a new one
+if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_date.to_s}'").empty? rescue true)
+  if post_message_to_slack(text) === "ok"
+    # record the message and the date sent to the db
+    ScraperWiki.save_sqlite([:date_posted], {date_posted: Date.today.to_s, text: text})
+  end
+end
 
 def post_message_to_slack(text)
   request_body = {
