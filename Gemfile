@@ -11,4 +11,5 @@ gem "rest-client"
 
 group :development do
   gem "dotenv"
+  gem "pry"
 end
