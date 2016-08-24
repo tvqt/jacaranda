@@ -37,7 +37,7 @@ end
 
 # build the sentence with new sign up stats
 text = new_signups_last_fortnight.to_s +
-       " people signed up for PlanningAlerts last fortnight."
+       " people signed up for PlanningAlerts last fortnight :revolving_hearts:"
 
 # if it's been a fortnight since the last message post a new one
 if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_date.to_s}'").empty? rescue true)
