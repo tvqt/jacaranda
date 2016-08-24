@@ -10,6 +10,10 @@ planningAlerts_subscribers_data = JSON.parse(
   RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
 )
 # build the sentence with new sign up stats
+new_signups_last_fortnight = 1000
+
+text = new_signups_last_fortnight.to_s +
+       " people signed up for PlanningAlerts last fortnight."
 # post it fortnightly
 post_message_to_slack(text)
 
