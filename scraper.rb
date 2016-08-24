@@ -4,11 +4,13 @@
 require 'scraperwiki'
 require 'rest-client'
 
-request_body = {
-  channel: "#bottesting",
-  username: "webhookbot",
-  text: "This is posted to #bottesting and comes from a bot named webhookbot."
-}
+def post_message_to_slack
+  request_body = {
+    channel: "#bottesting",
+    username: "webhookbot",
+    text: "This is posted to #bottesting and comes from a bot named webhookbot."
+  }
 
-RestClient.post(ENV["SLACK_CHANNEL_WEBHOOK_URL"], request_body.to_json)
+  RestClient.post(ENV["SLACK_CHANNEL_WEBHOOK_URL"], request_body.to_json)
+end
 
