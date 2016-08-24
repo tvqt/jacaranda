@@ -34,6 +34,7 @@ last_fortnight.each do |date|
     end
   end
 end
+
 # build the sentence with new sign up stats
 text = new_signups_last_fortnight.to_s +
        " people signed up for PlanningAlerts last fortnight."
