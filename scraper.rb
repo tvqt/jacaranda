@@ -3,6 +3,9 @@
 
 require 'scraperwiki'
 require 'rest-client'
+# Get the data
+# build the sentence with new sign up stats
+# post it fortnightly
 
 def post_message_to_slack
   request_body = {
