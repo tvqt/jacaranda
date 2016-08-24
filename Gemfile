@@ -9,6 +9,7 @@ ruby "2.0.0"
 gem "scraperwiki", git: "https://github.com/openaustralia/scraperwiki-ruby.git", branch: "morph_defaults"
 gem "rest-client"
 gem "activesupport"
+gem "octokit", "~> 4.0"
 
 group :development do
   gem "dotenv"
