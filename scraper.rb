@@ -34,6 +34,26 @@ def git_commits_between_dates(start_date, end_date)
   commits_count
 end
 
+def get_planningalerts_signups_between(start_date, end_date)
+  # Get the data
+  planningalerts_subscribers_data = JSON.parse(
+    RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
+  )
+
+  new_signups_for_period = 0
+
+  period = (start_date..end_date).to_a
+  period.each do |date|
+    planningalerts_subscribers_data.each do |row|
+      if row["date"].eql? date.to_s
+        new_signups_for_period += row["new_alert_subscribers"]
+      end
+    end
+  end
+
+  new_signups_for_period
+end
+
 beginning_of_fortnight = 1.fortnight.ago.beginning_of_week.to_date
 end_of_fortnight = 1.week.ago.end_of_week.to_date
 last_fortnight = (beginning_of_fortnight..end_of_fortnight).to_a
@@ -41,22 +61,7 @@ last_fortnight = (beginning_of_fortnight..end_of_fortnight).to_a
 # if it's been a fortnight since the last message post a new one
 if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_date.to_s}'").empty? rescue true)
   commits_count = git_commits_between_dates(beginning_of_fortnight, end_of_fortnight)
-
-  # Get the data
-  planningalerts_subscribers_data = JSON.parse(
-    RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
-  )
-
-  new_signups_last_fortnight = 0
-
-  # extract this into method so I can compare periods
-  last_fortnight.each do |date|
-    planningalerts_subscribers_data.each do |row|
-      if row["date"].eql? date.to_s
-        new_signups_last_fortnight += row["new_alert_subscribers"]
-      end
-    end
-  end
+  new_signups_last_fortnight = get_planningalerts_signups_between(beginning_of_fortnight, end_of_fortnight)
 
   # build the sentence with new sign up stats
   text = new_signups_last_fortnight.to_s +
