@@ -100,7 +100,7 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   text += " " + change_sentence
   text += " You shipped #{commits_count} commits in the same period." unless commits_count.zero?
   text += " There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
-          " PlanningAlerts subscribers!"
+          " PlanningAlerts subscribers! :star::star2::star::star2::star::star2:"
 
   if post_message_to_slack(text) === "ok"
     # record the message and the date sent to the db
