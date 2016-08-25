@@ -3,6 +3,7 @@
 
 require 'octokit'
 require 'scraperwiki'
+require 'mechanize'
 require 'rest-client'
 require 'JSON'
 require "active_support/all"
@@ -54,6 +55,11 @@ def get_planningalerts_signups_between(start_date, end_date)
   new_signups_for_period
 end
 
+def get_total_subscriber_count
+  page = Mechanize.new.get("https://www.planningalerts.org.au/performance")
+  page.at('#content h2').text.split(" ").first.to_i
+end
+
 class Numeric
   def percent_of(n)
     self.to_f / n.to_f * 100.0
@@ -78,7 +84,7 @@ fortnight_before_last = (beginning_of_fortnight_before_last..end_of_fortnight_be
 if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_date.to_s}'").empty? rescue true)
   commits_count = git_commits_between_dates(last_fortnight.first, last_fortnight.last)
 
-  total_planningalerts_subscribers = get_total_subcriber_count
+  total_planningalerts_subscribers = get_total_subscriber_count
 
   new_signups_last_fortnight = get_planningalerts_signups_between(last_fortnight.first, last_fortnight.last)
   new_signups_fortnight_before_last = get_planningalerts_signups_between(fortnight_before_last.first, fortnight_before_last.last)
@@ -93,6 +99,8 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
         " people signed up for PlanningAlerts last fortnight :revolving_hearts:"
   text += " " + change_sentence
   text += " You shipped #{commits_count} commits in the same period." unless commits_count.zero?
+  text += " There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
+          " PlanningAlerts subscribers!"
 
   if post_message_to_slack(text) === "ok"
     # record the message and the date sent to the db
