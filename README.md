@@ -63,7 +63,8 @@ Create a `.env` file using the example provided by running `cp .env.example .env
 
 ### Running this on morph.io
 
-This is a scraper that runs on [Morph](https://morph.io). To get started [see the documentation](https://morph.io/documentation)
+You can also run this as a scraper on [Morph](https://morph.io).
+To get started [see the documentation](https://morph.io/documentation)
 
 ## Image credit
 
