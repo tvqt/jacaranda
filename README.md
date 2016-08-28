@@ -55,8 +55,8 @@ In local development you can add these to a `.env` file
 and [use dotenv](https://github.com/bkeepers/dotenv) to load them as the scraper runs:
 
 ```
-SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
-GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+MORPH_SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
+MORPH_GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 Create a `.env` file using the example provided by running `cp .env.example .env`.

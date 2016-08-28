@@ -15,11 +15,11 @@ def post_message_to_slack(text)
     text: text
   }
 
-  RestClient.post(ENV["SLACK_CHANNEL_WEBHOOK_URL"], request_body.to_json)
+  RestClient.post(ENV["MORPH_SLACK_CHANNEL_WEBHOOK_URL"], request_body.to_json)
 end
 
 def git_commits_between_dates(start_date, end_date)
-  github_client = Octokit::Client.new :access_token => ENV["GITHUB_OAUTH_ACCESS_TOKEN"]
+  github_client = Octokit::Client.new :access_token => ENV["MORPH_GITHUB_OAUTH_ACCESS_TOKEN"]
   response = github_client.get(
     "repos/openaustralia/planningalerts/commits?since=#{start_date.to_s}&until#{end_date.to_s}"
   )
