@@ -44,7 +44,24 @@ the number of *currently active subscribers who signed up in the last fortnight*
 This means that if people subscribe and unsubscribe within a fortnight,
 they won’t be counted.
 
-## Running this on morph.io
+## Usage
+
+This program depends on two environment variables:
+
+* *GitHub OAuth token* for your github account
+* *Slack channel webhook url* to post the message to
+
+In local development you can add these to a `.env` file
+and [use dotenv](https://github.com/bkeepers/dotenv) to load them as the scraper runs:
+
+```
+SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
+GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+Create a `.env` file using the example provided by running `cp .env.example .env`.
+
+### Running this on morph.io
 
 This is a scraper that runs on [Morph](https://morph.io). To get started [see the documentation](https://morph.io/documentation)
 
