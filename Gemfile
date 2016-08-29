@@ -11,6 +11,7 @@ gem "mechanize"
 gem "rest-client"
 gem "activesupport"
 gem "octokit", "~> 4.0"
+gem "json"
 
 group :development do
   gem "dotenv"

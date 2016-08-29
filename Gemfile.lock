@@ -78,6 +78,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   dotenv
+  json
   mechanize
   octokit (~> 4.0)
   pry
