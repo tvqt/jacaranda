@@ -1,4 +1,6 @@
-## Image
+# Jacaranda
+
+*A watchful tree and slack messenger to keep you informed of the use of PlanningAlerts.*
 
 Working on PlanningAlerts over the last year we’ve noticed that:
 
