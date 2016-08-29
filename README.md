@@ -44,6 +44,10 @@ the number of *currently active subscribers who signed up in the last fortnight*
 This means that if people subscribe and unsubscribe within a fortnight,
 they won’t be counted.
 
+The time frames that this claims to show subscribers for aren’t accurate
+because they're displayed as it they were recorded in local time, but they're
+actually counted in UTC.
+
 ## Usage
 
 This program depends on two environment variables:
