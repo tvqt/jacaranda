@@ -5,7 +5,7 @@ require 'octokit'
 require 'scraperwiki'
 require 'mechanize'
 require 'rest-client'
-require 'JSON'
+require 'json'
 require "active_support/all"
 
 def post_message_to_slack(text)
