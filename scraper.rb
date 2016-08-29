@@ -81,11 +81,15 @@ end_of_fortnight_before_last = 3.weeks.ago.end_of_week.to_date
 fortnight_before_last = (beginning_of_fortnight_before_last..end_of_fortnight_before_last)
 
 # if it's been a fortnight since the last message post a new one
+puts "Check if it has collected data in the last fortnight"
 if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_date.to_s}'").empty? rescue true)
+  puts "Collect information from GitHub"
   commits_count = git_commits_between_dates(last_fortnight.first, last_fortnight.last)
 
+  puts "Collect total subscribers information from PlanningAlerts"
   total_planningalerts_subscribers = get_total_subscriber_count
 
+  puts "Collect new subscriber information from PlanningAlerts"
   new_signups_last_fortnight = get_planningalerts_signups_between(last_fortnight.first, last_fortnight.last)
   new_signups_fortnight_before_last = get_planningalerts_signups_between(fortnight_before_last.first, fortnight_before_last.last)
 
@@ -102,8 +106,10 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   text += " There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
           " PlanningAlerts subscribers! :star2:"
 
+  puts "Post the message to Slack"
   if post_message_to_slack(text) === "ok"
     # record the message and the date sent to the db
+    puts "Save the message to the db"
     ScraperWiki.save_sqlite([:date_posted], {date_posted: Date.today.to_s, text: text})
   end
 else
