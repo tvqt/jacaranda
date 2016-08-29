@@ -10,7 +10,6 @@ require "active_support/all"
 
 def post_message_to_slack(text)
   request_body = {
-    channel: "#bottesting",
     username: "Jacaranda",
     text: text
   }
