@@ -71,7 +71,7 @@ end
 
 def percentage_change_in_words(change)
   text = change.to_s.delete("-") + "% "
-  text += change > 0 ? "up" : "down"
+  text += change > 0 ? "more" : "less"
   text
 end
 
@@ -79,7 +79,7 @@ def change_sentence(last_fortnight, fortnight_before_last)
   percentage_change_from_fortnight_before = last_fortnight.percent_of(fortnight_before_last)- 100
   percentage_change_from_fortnight_before = percentage_change_from_fortnight_before.round(1).floor
 
-  change_sentence = "That’s " + percentage_change_in_words(percentage_change_from_fortnight_before) + " from the fortnight before."
+  change_sentence = "That’s " + percentage_change_in_words(percentage_change_from_fortnight_before) + " than the fortnight before."
 end
 
 beginning_of_fortnight = 1.fortnight.ago.beginning_of_week.to_date
