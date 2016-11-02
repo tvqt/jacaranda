@@ -30,7 +30,7 @@ and what we do with the information.
 Currently Jacaranda tells you about:
 
 * the number of people who signed up for PlanningAlerts in the last fortnight;
-* the difference between this number of the figure for the previous fortnight;
+* the difference between this number and the figure for the previous fortnight;
 * the number of commits pushed to the project in the last fortnight; and,
 * the total number of people now signed up to PlanningAlerts.
 
