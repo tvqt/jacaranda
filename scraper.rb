@@ -34,12 +34,14 @@ def git_commits_between_dates(start_date, end_date)
   commits_count
 end
 
-def get_planningalerts_data_between(attribute, start_date, end_date)
+def planningalerts_subscribers_data
   # Get the data
-  planningalerts_subscribers_data = JSON.parse(
+  @planningalerts_subscribers_data ||= JSON.parse(
     RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
   )
+end
 
+def get_planningalerts_data_between(attribute, start_date, end_date)
   new_signups_for_period = 0
 
   period = (start_date..end_date).to_a
