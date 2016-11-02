@@ -73,6 +73,13 @@ def percentage_change_in_words(change)
   text
 end
 
+def change_sentence(last_fortnight, fortnight_before_last)
+  percentage_change_from_fortnight_before = last_fortnight.percent_of(fortnight_before_last)- 100
+  percentage_change_from_fortnight_before = percentage_change_from_fortnight_before.round(1).floor
+
+  change_sentence = "That’s " + percentage_change_in_words(percentage_change_from_fortnight_before) + " from the fortnight before."
+end
+
 beginning_of_fortnight = 1.fortnight.ago.beginning_of_week.to_date
 end_of_fortnight = 1.week.ago.end_of_week.to_date
 last_fortnight = (beginning_of_fortnight..end_of_fortnight).to_a
@@ -97,15 +104,10 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   puts "Collect unsubscribers information from PlanningAlerts"
   unsubscribers_last_fortnight = get_planningalerts_data_between("emails_completely_unsubscribed", last_fortnight.first, last_fortnight.last)
 
-  percentage_change_from_fortnight_before = new_signups_last_fortnight.percent_of(new_signups_fortnight_before_last)- 100
-  percentage_change_from_fortnight_before = percentage_change_from_fortnight_before.round(1).floor
-
-  change_sentence = "That’s " + percentage_change_in_words(percentage_change_from_fortnight_before) + " from the fortnight before."
-
   # build the sentence with new sign up stats
   text = new_signups_last_fortnight.to_s +
         " people signed up for PlanningAlerts last fortnight :revolving_hearts:"
-  text += " " + change_sentence + "\n"
+  text += " " + change_sentence(new_signups_last_fortnight, new_signups_fortnight_before_last) + "\n"
   text += unsubscribers_last_fortnight.to_s + " people left :scream_cat: That’s 50% down from the fortnight before.\n"
   text += "You shipped #{commits_count} commits in the same period.\n" unless commits_count.zero?
   text += "There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
