@@ -105,11 +105,10 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   puts "Collect total subscribers information from PlanningAlerts"
   total_planningalerts_subscribers = get_total_subscriber_count
 
-  puts "Collect new subscriber information from PlanningAlerts"
+  puts "Collect new subscriber/unsubscriber information from PlanningAlerts"
   new_signups_last_fortnight = get_planningalerts_data_between("new_alert_subscribers", last_fortnight.first, last_fortnight.last)
   new_signups_fortnight_before_last = get_planningalerts_data_between("new_alert_subscribers", fortnight_before_last.first, fortnight_before_last.last)
 
-  puts "Collect unsubscribers information from PlanningAlerts"
   unsubscribers_last_fortnight = get_planningalerts_data_between("emails_completely_unsubscribed", last_fortnight.first, last_fortnight.last)
   unsubscribers_fortnight_before_last = get_planningalerts_data_between("emails_completely_unsubscribed", fortnight_before_last.first, fortnight_before_last.last)
 
