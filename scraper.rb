@@ -95,7 +95,7 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   new_signups_fortnight_before_last = get_planningalerts_data_between("new_alert_subscribers", fortnight_before_last.first, fortnight_before_last.last)
 
   puts "Collect unsubscribers information from PlanningAlerts"
-  unsuberscribers_last_fortnight = get_planningalerts_data_between("emails_completely_unsubscribed", last_fortnight.first, last_fortnight.last)
+  unsubscribers_last_fortnight = get_planningalerts_data_between("emails_completely_unsubscribed", last_fortnight.first, last_fortnight.last)
 
   percentage_change_from_fortnight_before = new_signups_last_fortnight.percent_of(new_signups_fortnight_before_last)- 100
   percentage_change_from_fortnight_before = percentage_change_from_fortnight_before.round(1).floor
@@ -106,7 +106,7 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   text = new_signups_last_fortnight.to_s +
         " people signed up for PlanningAlerts last fortnight :revolving_hearts:"
   text += " " + change_sentence + "\n"
-  text += unsuberscribers_last_fortnight.to_s + " people left :scream_cat: That’s 50% down from the fortnight before.\n"
+  text += unsubscribers_last_fortnight.to_s + " people left :scream_cat: That’s 50% down from the fortnight before.\n"
   text += "You shipped #{commits_count} commits in the same period.\n" unless commits_count.zero?
   text += "There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
           " PlanningAlerts subscribers! :star2:"
