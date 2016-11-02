@@ -31,6 +31,8 @@ Currently Jacaranda tells you about:
 
 * the number of people who signed up for PlanningAlerts in the last fortnight;
 * the difference between this number and the figure for the previous fortnight;
+* the number of people who have unsubscribed in the last fortnight;
+* the difference between this number and the figure for the previous fortnight;
 * the number of commits pushed to the project in the last fortnight; and,
 * the total number of people now signed up to PlanningAlerts.
 
@@ -41,21 +43,17 @@ will have a better impact.
 
 ### Caveats
 
-PlanningAlerts currently provide data about
-the number of *currently active subscribers who signed up in the last fortnight*.
-This means that if people subscribe and unsubscribe within a fortnight,
-they won’t be counted.
-
 The time frames that this claims to show subscribers for aren’t accurate
 because they're displayed as it they were recorded in local time, but they're
 actually counted in UTC.
 
 ## Usage
 
-This program depends on two environment variables:
+This program depends on three environment variables:
 
 * *GitHub OAuth token* for your github account
 * *Slack channel webhook url* to post the message to
+* *Live mode* to make it actually post to the Slack channel #townsquare and save to the database
 
 In local development you can add these to a `.env` file
 and [use dotenv](https://github.com/bkeepers/dotenv) to load them as the scraper runs:
@@ -63,6 +61,7 @@ and [use dotenv](https://github.com/bkeepers/dotenv) to load them as the scraper
 ```
 MORPH_SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
 MORPH_GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+MORPH_LIVE_MODE=false
 ```
 
 Create a `.env` file using the example provided by running `cp .env.example .env`.
