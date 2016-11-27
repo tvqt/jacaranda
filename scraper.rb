@@ -116,7 +116,7 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   text = new_signups_last_fortnight.to_s +
         " people signed up for PlanningAlerts last fortnight :revolving_hearts:"
   text += " " + change_sentence(new_signups_last_fortnight, new_signups_fortnight_before_last) + "\n"
-  text += unsubscribers_last_fortnight.to_s + " people left :scream_cat: "
+  text += unsubscribers_last_fortnight.to_s + " people left. "
   text += change_sentence(unsubscribers_last_fortnight, unsubscribers_fortnight_before_last) + "\n"
   text += "You shipped #{commits_count} commits in the same period.\n" unless commits_count.zero?
   text += "There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
