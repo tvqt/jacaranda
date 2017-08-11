@@ -30,6 +30,22 @@ While the number of users isn’t a great measure of PlanningAlerts’ impact, i
 
 The time frames that this claims to show subscribers for aren’t accurate because they're displayed as it they were recorded in local time, but they're actually counted in UTC.
 
+## Quickstart
+
+Ensure you have Ruby + Bundler installed, then run:
+
+``` bash
+git clone https://github.com/openaustralia/jacaranda.git
+cd jacaranda
+bundle
+```
+
+Then run the scraper with:
+
+``` bash
+bundle exec ruby scraper.rb
+```
+
 ## Usage
 
 This program depends on three environment variables:
