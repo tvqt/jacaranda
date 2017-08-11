@@ -92,13 +92,6 @@ beginning_of_fortnight_before_last = 2.fortnight.ago.beginning_of_week.to_date
 end_of_fortnight_before_last = 3.weeks.ago.end_of_week.to_date
 fortnight_before_last = (beginning_of_fortnight_before_last..end_of_fortnight_before_last)
 
-# if it's been a fortnight since the last message post a new one
-if ENV["MORPH_LIVE_MODE"].eql? "true"
-  puts "In live mode, this will post to Slack and save to the db"
-else
-  puts "In test mode, this wont post to Slack or save to the db"
-end
-
 puts "Check if it has collected data in the last fortnight"
 if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_date.to_s}'").empty? rescue true)
   puts "Collect information from GitHub"
@@ -124,16 +117,20 @@ if (ScraperWiki.select("* from data where `date_posted`>'#{1.fortnight.ago.to_da
   text += "There are now " + ActiveSupport::NumberHelper.number_to_human(total_planningalerts_subscribers).downcase +
           " PlanningAlerts subscribers! :star2:"
 
-  puts "Post the message to Slack"
-  if post_message_to_slack(text) === "ok"
-    # record the message and the date sent to the db
-    puts "Save the message to the db"
-
-    if ENV["MORPH_LIVE_MODE"].eql? "true"
+  if ENV["MORPH_LIVE_MODE"] == "true"
+    puts "In live mode, this will post to Slack and save to the db"
+    puts "Post the message to Slack"
+    if post_message_to_slack(text) === "ok"
+      # record the message and the date sent to the db
+      puts "Save the message to the db"
       ScraperWiki.save_sqlite([:date_posted], {date_posted: Date.today.to_s, text: text})
     else
-      puts text
+      puts "Error: could not post the message to Slack!"
     end
+  else
+    puts "In test mode, this wont post to Slack or save to the db"
+    puts
+    puts text
   end
 else
   p "I’ve already spoken to the team this fortnight"
