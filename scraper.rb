@@ -37,10 +37,12 @@ def git_commits_between_dates(start_date, end_date)
 end
 
 def planningalerts_subscribers_data
-  # Get the data
-  @planningalerts_subscribers_data ||= JSON.parse(
-    RestClient.get("https://www.planningalerts.org.au/performance/alerts.json")
-  )
+  # Memoize if we have fetched the data before
+  return @planningalerts_subscribers_data if @planningalerts_subscribers_data
+  # Otherwise fetch the data, with a _long_ timeout.
+  url = 'https://www.planningalerts.org.au/performance/alerts.json'
+  response = RestClient::Request.execute(method: :get, url: url, timeout: 300)
+  @planningalerts_subscribers_data = JSON.parse(response)
 end
 
 def get_planningalerts_data_between(attribute, start_date, end_date)
