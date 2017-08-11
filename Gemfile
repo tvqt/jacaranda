@@ -12,8 +12,14 @@ gem "rest-client"
 gem "activesupport"
 gem "octokit", "~> 4.0"
 gem "json"
+gem 'dotenv'
 
 group :development do
-  gem "dotenv"
   gem "pry"
+end
+
+group :test do
+  gem 'rspec'
+  gem 'webmock'
+  gem 'vcr'
 end

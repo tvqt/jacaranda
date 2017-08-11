@@ -1,0 +1,80 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/openaustralia/planningalerts/commits?since=2017-07-24&until=2017-08-06
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.3.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 12 Aug 2017 08:11:20 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - GitHub.com
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '54'
+      X-Ratelimit-Reset:
+      - '1502525695'
+      Cache-Control:
+      - public, max-age=60, s-maxage=60
+      Vary:
+      - Accept
+      - Accept-Encoding
+      Etag:
+      - W/"fc8527eafcbec19b898c834f1fbf5815"
+      Last-Modified:
+      - Tue, 01 Aug 2017 14:56:05 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+#      Link:
+#      - <https://api.github.com/repositories/388113/commits?page=3&since=2017-07-24&until=2017-08-06>;
+#        rel="next", <https://api.github.com/repositories/388113/commits?page=3&since=2017-07-24&until=2017-08-06>;
+#        rel="last", <https://api.github.com/repositories/388113/commits?page=1&since=2017-07-24&until=2017-08-06>;
+#        rel="first", <https://api.github.com/repositories/388113/commits?page=1&since=2017-07-24&until=2017-08-06>;
+#        rel="prev"
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.075235'
+      X-Github-Request-Id:
+      - FA56:C23B:C9B14:F5311:598EB827
+    body:
+      encoding: ASCII-8BIT
+      string: '[]'
+    http_version:
+  recorded_at: Sat, 12 Aug 2017 08:11:19 GMT
+recorded_with: VCR 3.0.3
