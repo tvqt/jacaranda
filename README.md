@@ -34,13 +34,13 @@ The time frames that this claims to show subscribers for aren’t accurate becau
 
 This program depends on three environment variables:
 
-* *GitHub OAuth token* for your github account
+* *GitHub OAuth token* for your GitHub account
 * *Slack channel webhook url* to post the message to
-* *Live mode* to make it actually post to the Slack channel #townsquare and save to the database
+* *Live mode* to make it actually post to the Slack channel `#townsquare` and save to the database
 
 In local development you can add these to a `.env` file and [use dotenv](https://github.com/bkeepers/dotenv) to load them as the scraper runs:
 
-```
+``` bash
 MORPH_SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
 MORPH_GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 MORPH_LIVE_MODE=false
