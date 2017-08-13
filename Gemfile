@@ -1,25 +1,24 @@
-# It's easy to add more libraries or choose different versions. Any libraries
-# specified here will be installed and made available to your morph.io scraper.
-# Find out more: https://morph.io/documentation/ruby
+# frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-ruby "2.3.1"
+ruby '2.3.1'
 
-gem "scraperwiki", git: "https://github.com/openaustralia/scraperwiki-ruby.git", branch: "morph_defaults"
-gem "mechanize"
-gem "rest-client"
-gem "activesupport"
-gem "octokit", "~> 4.0"
-gem "json"
+gem 'activesupport'
 gem 'dotenv'
+gem 'json'
+gem 'mechanize'
+gem 'octokit', '~> 4.0'
+gem 'rest-client'
+gem 'scraperwiki', git: 'https://github.com/openaustralia/scraperwiki-ruby.git', branch: 'morph_defaults'
 
 group :development do
-  gem "pry"
+  gem 'pry'
 end
 
 group :test do
   gem 'rspec'
-  gem 'webmock'
+  gem 'rubocop'
   gem 'vcr'
+  gem 'webmock'
 end
