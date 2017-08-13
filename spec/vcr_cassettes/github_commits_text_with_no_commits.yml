@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/repos/openaustralia/planningalerts/commits?since=2017-07-24&until=2017-08-06
+    uri: https://api.github.com/repos/openaustralia/planningalerts/commits?per_page=100&since=2017-07-24&until=2017-08-06
     body:
       encoding: US-ASCII
       string: ''

@@ -43,32 +43,22 @@ class GitHub
   class << self
     def commits_text(period:)
       puts 'Collect information from GitHub'
-      commits_count = git_commits_between_dates(period.first, period.last)
-      if commits_count.zero?
+      if commits_count(period: period).zero?
         nil
       else
-        "You shipped #{commits_count} commits in the same period."
+        "You shipped #{commits_count(period: period)} commits in the same period."
       end
     end
 
     private
 
-    def git_commits_between_dates(start, finish)
-      # FIXME(auxesis): this being set so deep is a smell
-      access_token = ENV['MORPH_GITHUB_OAUTH_ACCESS_TOKEN']
-      github = Octokit::Client.new(access_token: access_token)
-      path = "repos/openaustralia/planningalerts/commits?since=#{start}&until=#{finish}"
-      response = github.get(path)
-
-      commits_count = response.count
-
-      last_response = github.last_response
-      until last_response.rels[:next].nil?
-        last_response = last_response.rels[:next].get
-        commits_count += last_response.data.count
-      end
-
-      commits_count
+    def commits_count(period:)
+      github = Octokit::Client.new
+      github.auto_paginate = true
+      repo = 'openaustralia/planningalerts'
+      params = { since: period.first, until: period.last }
+      commits = github.commits(repo, params)
+      commits.size
     end
   end
 end
