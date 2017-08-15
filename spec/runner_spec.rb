@@ -74,7 +74,7 @@ describe '#posts' do
 end
 
 describe '#run' do
-  let(:url) { Faker::Internet.url('hooks.slack.com', '/services') }
+  let(:url) { Faker::Internet.url('hooks.slack.com') }
   before(:each) {
     set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
     set_environment_variable('MORPH_LIVE_MODE', 'true')
@@ -103,7 +103,7 @@ describe 'post' do
   after(:each) { restore_env }
   it 'messages Slack' do
     VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
-      url = Faker::Internet.url('hooks.slack.com', '/services')
+      url = Faker::Internet.url('hooks.slack.com')
       set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
       Jacaranda::Runner.post(Faker::Lorem.paragraph(2))
       expect(a_request(:post, url)).to have_been_made.times(1)
@@ -112,7 +112,7 @@ describe 'post' do
 
   it 'records the message if posting to Slack is successful' do
     VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
-      url = Faker::Internet.url('hooks.slack.com', '/services')
+      url = Faker::Internet.url('hooks.slack.com')
       set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
       Jacaranda::Runner.post(Faker::Lorem.paragraph(2))
       expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
