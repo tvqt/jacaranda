@@ -54,9 +54,8 @@ bundle exec rspec
 
 ## Usage
 
-This scraper requires three environment variables:
+This scraper requires these environment variables:
 
-* `MORPH_GITHUB_OAUTH_ACCESS_TOKEN` to talk to the GitHub API. You must generate a [personal access token](https://github.com/settings/tokens) with the `repo` permission.
 * `MORPH_SLACK_CHANNEL_WEBHOOK_URL` to post the message to a channel in Slack. You can get a URL by adding an _Incoming Webhook_ customer integration in your Slack org.
 * `MORPH_LIVE_MODE` determines if the scraper actually posts to the Slack channel `#townsquare` and save to the database
 
@@ -64,7 +63,6 @@ When developing locally, you can add these environment variables to a [`.env` fi
 
 ``` bash
 MORPH_SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
-MORPH_GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 MORPH_LIVE_MODE=false
 ```
 
