@@ -77,7 +77,11 @@ module Jacaranda
         url = options.delete(:url)
         raise ArgumentError, 'Must supply :url in options' unless url
 
-        RestClient.post(url, options.to_json) =~ /ok/i
+        begin
+          RestClient.post(url, options.to_json) =~ /ok/i
+        rescue RestClient::Exception => e
+          false
+        end
       end
 
       def last_fortnight

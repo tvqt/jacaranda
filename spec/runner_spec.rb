@@ -116,10 +116,19 @@ describe 'post' do
     VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
       url = Faker::Internet.url('hooks.slack.com')
       set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
-      Jacaranda::Runner.post(Faker::Lorem.paragraph(2))
+      text = Faker::Lorem.paragraph(2)
+      Jacaranda::Runner.post(text)
       expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
     end
   end
 
-  it 'does not record the message if posting to Slack is unsuccessful'
+  it 'does not record the message if posting to Slack is unsuccessful' do
+    VCR.use_cassette('post_to_slack_webhook_but_fails', match_requests_on: [:host]) do
+      url = Faker::Internet.url('hooks.slack.com')
+      set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+      text = Faker::Lorem.paragraph(2)
+      Jacaranda::Runner.post(text)
+      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
+    end
+  end
 end
