@@ -16,10 +16,10 @@ module Jacaranda
         validate_environment_variables!
 
         if posted_in_last_fortnight?
-          puts 'We have posted an update during this fortnight.'
+          puts "[#{name}] We have posted an update during this fortnight."
           false
         else
-          puts 'We have not posted an update during this fortnight.'
+          puts "[#{name}] We have not posted an update during this fortnight."
           scrape_and_post_message
           true
         end
@@ -32,7 +32,7 @@ module Jacaranda
       def validate_environment_variables!
         return if required_environment_variables.all? { |var| ENV[var] }
 
-        puts 'The scraper needs the following environment variables set:'
+        puts "[#{name}] The runner needs the following environment variables set:"
         puts
         puts required_environment_variables.join("\n")
         exit(1)
@@ -61,11 +61,11 @@ module Jacaranda
         message = build.compact.join("\n\n")
 
         if morph_live_mode?
-          puts 'Posting the message to Slack'
+          puts "[#{name}] Posting the message to Slack."
           post(message)
         else
-          puts 'Not posting to Slack'
-          puts 'Not recording the message in the database'
+          puts "[#{name}] Not posting to Slack."
+          puts "[#{name}] Not recording the message in the database."
           print(message)
         end
       end
@@ -99,10 +99,10 @@ module Jacaranda
         opts = { url: ENV['MORPH_SLACK_CHANNEL_WEBHOOK_URL'] }
         opts[:channel] = '#bottesting' unless morph_live_mode?
         if post_message_to_slack(message, opts)
-          puts 'Recording the message in the database'
+          puts "[#{name}] Recording the message in the database."
           record_successful_post(message)
         else
-          puts 'Error: could not post the message to Slack!'
+          puts "[#{name}] Error: could not post the message to Slack!"
         end
       end
 
@@ -119,6 +119,10 @@ module Jacaranda
         puts
         puts message.gsub(/^/m, '> ')
         puts
+      end
+
+      def name
+        self.to_s.split('::').last
       end
     end
   end
