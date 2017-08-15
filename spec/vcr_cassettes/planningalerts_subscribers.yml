@@ -1,0 +1,247 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.planningalerts.org.au/performance/alerts.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 12 Aug 2017 08:36:05 GMT
+      Server:
+      - Apache/2.2.22 (Ubuntu)
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Request-Id:
+      - ea40a654-7433-45fd-913d-fe9250fbae19
+      Etag:
+      - W/"efd8358ccb9b67fdf0088c50a821eac6"
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '61.949274'
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - Phusion Passenger 5.1.2
+      Status:
+      - 200 OK
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: '[{"date":"2017-08-11","new_alert_subscribers":42,"emails_completely_unsubscribed":25},{"date":"2017-08-10","new_alert_subscribers":54,"emails_completely_unsubscribed":21},{"date":"2017-08-09","new_alert_subscribers":74,"emails_completely_unsubscribed":15},{"date":"2017-08-08","new_alert_subscribers":60,"emails_completely_unsubscribed":15},{"date":"2017-08-07","new_alert_subscribers":65,"emails_completely_unsubscribed":20},{"date":"2017-08-06","new_alert_subscribers":41,"emails_completely_unsubscribed":7},{"date":"2017-08-05","new_alert_subscribers":43,"emails_completely_unsubscribed":9},{"date":"2017-08-04","new_alert_subscribers":50,"emails_completely_unsubscribed":15},{"date":"2017-08-03","new_alert_subscribers":64,"emails_completely_unsubscribed":18},{"date":"2017-08-02","new_alert_subscribers":62,"emails_completely_unsubscribed":19},{"date":"2017-08-01","new_alert_subscribers":53,"emails_completely_unsubscribed":17},{"date":"2017-07-31","new_alert_subscribers":61,"emails_completely_unsubscribed":11},{"date":"2017-07-30","new_alert_subscribers":51,"emails_completely_unsubscribed":24},{"date":"2017-07-29","new_alert_subscribers":37,"emails_completely_unsubscribed":13},{"date":"2017-07-28","new_alert_subscribers":39,"emails_completely_unsubscribed":14},{"date":"2017-07-27","new_alert_subscribers":54,"emails_completely_unsubscribed":1},{"date":"2017-07-26","new_alert_subscribers":62,"emails_completely_unsubscribed":8},{"date":"2017-07-25","new_alert_subscribers":52,"emails_completely_unsubscribed":4},{"date":"2017-07-24","new_alert_subscribers":45,"emails_completely_unsubscribed":11},{"date":"2017-07-23","new_alert_subscribers":45,"emails_completely_unsubscribed":20},{"date":"2017-07-22","new_alert_subscribers":40,"emails_completely_unsubscribed":29},{"date":"2017-07-21","new_alert_subscribers":37,"emails_completely_unsubscribed":18},{"date":"2017-07-20","new_alert_subscribers":53,"emails_completely_unsubscribed":20},{"date":"2017-07-19","new_alert_subscribers":51,"emails_completely_unsubscribed":18},{"date":"2017-07-18","new_alert_subscribers":49,"emails_completely_unsubscribed":15},{"date":"2017-07-17","new_alert_subscribers":72,"emails_completely_unsubscribed":7},{"date":"2017-07-16","new_alert_subscribers":45,"emails_completely_unsubscribed":13},{"date":"2017-07-15","new_alert_subscribers":44,"emails_completely_unsubscribed":20},{"date":"2017-07-14","new_alert_subscribers":47,"emails_completely_unsubscribed":28},{"date":"2017-07-13","new_alert_subscribers":56,"emails_completely_unsubscribed":31},{"date":"2017-07-12","new_alert_subscribers":73,"emails_completely_unsubscribed":20},{"date":"2017-07-11","new_alert_subscribers":65,"emails_completely_unsubscribed":29},{"date":"2017-07-10","new_alert_subscribers":77,"emails_completely_unsubscribed":15},{"date":"2017-07-09","new_alert_subscribers":58,"emails_completely_unsubscribed":35},{"date":"2017-07-08","new_alert_subscribers":52,"emails_completely_unsubscribed":24},{"date":"2017-07-07","new_alert_subscribers":61,"emails_completely_unsubscribed":16},{"date":"2017-07-06","new_alert_subscribers":65,"emails_completely_unsubscribed":28},{"date":"2017-07-05","new_alert_subscribers":64,"emails_completely_unsubscribed":27},{"date":"2017-07-04","new_alert_subscribers":61,"emails_completely_unsubscribed":20},{"date":"2017-07-03","new_alert_subscribers":93,"emails_completely_unsubscribed":15},{"date":"2017-07-02","new_alert_subscribers":54,"emails_completely_unsubscribed":34},{"date":"2017-07-01","new_alert_subscribers":46,"emails_completely_unsubscribed":17},{"date":"2017-06-30","new_alert_subscribers":49,"emails_completely_unsubscribed":36},{"date":"2017-06-29","new_alert_subscribers":54,"emails_completely_unsubscribed":40},{"date":"2017-06-28","new_alert_subscribers":73,"emails_completely_unsubscribed":43},{"date":"2017-06-27","new_alert_subscribers":67,"emails_completely_unsubscribed":20},{"date":"2017-06-26","new_alert_subscribers":72,"emails_completely_unsubscribed":15},{"date":"2017-06-25","new_alert_subscribers":50,"emails_completely_unsubscribed":26},{"date":"2017-06-24","new_alert_subscribers":41,"emails_completely_unsubscribed":20},{"date":"2017-06-23","new_alert_subscribers":56,"emails_completely_unsubscribed":24},{"date":"2017-06-22","new_alert_subscribers":54,"emails_completely_unsubscribed":30},{"date":"2017-06-21","new_alert_subscribers":70,"emails_completely_unsubscribed":26},{"date":"2017-06-20","new_alert_subscribers":66,"emails_completely_unsubscribed":22},{"date":"2017-06-19","new_alert_subscribers":61,"emails_completely_unsubscribed":17},{"date":"2017-06-18","new_alert_subscribers":52,"emails_completely_unsubscribed":19},{"date":"2017-06-17","new_alert_subscribers":43,"emails_completely_unsubscribed":12},{"date":"2017-06-16","new_alert_subscribers":52,"emails_completely_unsubscribed":16},{"date":"2017-06-15","new_alert_subscribers":54,"emails_completely_unsubscribed":26},{"date":"2017-06-14","new_alert_subscribers":77,"emails_completely_unsubscribed":18},{"date":"2017-06-13","new_alert_subscribers":76,"emails_completely_unsubscribed":8},{"date":"2017-06-12","new_alert_subscribers":48,"emails_completely_unsubscribed":15},{"date":"2017-06-11","new_alert_subscribers":44,"emails_completely_unsubscribed":13},{"date":"2017-06-10","new_alert_subscribers":42,"emails_completely_unsubscribed":29},{"date":"2017-06-09","new_alert_subscribers":90,"emails_completely_unsubscribed":32},{"date":"2017-06-08","new_alert_subscribers":59,"emails_completely_unsubscribed":43},{"date":"2017-06-07","new_alert_subscribers":76,"emails_completely_unsubscribed":32},{"date":"2017-06-06","new_alert_subscribers":61,"emails_completely_unsubscribed":23},{"date":"2017-06-05","new_alert_subscribers":63,"emails_completely_unsubscribed":13},{"date":"2017-06-04","new_alert_subscribers":41,"emails_completely_unsubscribed":26},{"date":"2017-06-03","new_alert_subscribers":41,"emails_completely_unsubscribed":28},{"date":"2017-06-02","new_alert_subscribers":48,"emails_completely_unsubscribed":21},{"date":"2017-06-01","new_alert_subscribers":75,"emails_completely_unsubscribed":20},{"date":"2017-05-31","new_alert_subscribers":53,"emails_completely_unsubscribed":27},{"date":"2017-05-30","new_alert_subscribers":68,"emails_completely_unsubscribed":4},{"date":"2017-05-29","new_alert_subscribers":72,"emails_completely_unsubscribed":7},{"date":"2017-05-28","new_alert_subscribers":61,"emails_completely_unsubscribed":19},{"date":"2017-05-27","new_alert_subscribers":44,"emails_completely_unsubscribed":16},{"date":"2017-05-26","new_alert_subscribers":60,"emails_completely_unsubscribed":24},{"date":"2017-05-25","new_alert_subscribers":66,"emails_completely_unsubscribed":18},{"date":"2017-05-24","new_alert_subscribers":53,"emails_completely_unsubscribed":30},{"date":"2017-05-23","new_alert_subscribers":66,"emails_completely_unsubscribed":24},{"date":"2017-05-22","new_alert_subscribers":75,"emails_completely_unsubscribed":14},{"date":"2017-05-21","new_alert_subscribers":60,"emails_completely_unsubscribed":24},{"date":"2017-05-20","new_alert_subscribers":60,"emails_completely_unsubscribed":25},{"date":"2017-05-19","new_alert_subscribers":52,"emails_completely_unsubscribed":18},{"date":"2017-05-18","new_alert_subscribers":88,"emails_completely_unsubscribed":22},{"date":"2017-05-17","new_alert_subscribers":81,"emails_completely_unsubscribed":26},{"date":"2017-05-16","new_alert_subscribers":76,"emails_completely_unsubscribed":31},{"date":"2017-05-15","new_alert_subscribers":86,"emails_completely_unsubscribed":9},{"date":"2017-05-14","new_alert_subscribers":61,"emails_completely_unsubscribed":29},{"date":"2017-05-13","new_alert_subscribers":53,"emails_completely_unsubscribed":17},{"date":"2017-05-12","new_alert_subscribers":64,"emails_completely_unsubscribed":22}]'
+    http_version: 
+  recorded_at: Sat, 12 Aug 2017 08:37:07 GMT
+- request:
+    method: get
+    uri: https://www.planningalerts.org.au/performance
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip,deflate,identity
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Mechanize/2.7.3 Ruby/2.3.1p112 (http://github.com/sparklemotion/mechanize/)
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-us,en;q=0.5
+      Host:
+      - www.planningalerts.org.au
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - 300
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 12 Aug 2017 08:55:29 GMT
+      Server:
+      - Apache/2.2.22 (Ubuntu)
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Request-Id:
+      - 45172d72-9e7b-4d3b-908e-8da7c3b32fc0
+      Etag:
+      - W/"4cb4c353cb41a656676e01495c436413"
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '22.663687'
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - Phusion Passenger 5.1.2
+      Status:
+      - 200 OK
+      Vary:
+      - Accept-Encoding
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '5605'
+      Content-Type:
+      - text/html; charset=utf-8
+      Set-Cookie:
+      - _planningalerts_app_session=MW9KSXNJT1MyRDBBZ1p6QWhiVE5kcCtaS1NTRmlieFdwcTJML1JhaW4wSndWYVE1TGIwU0ZPdDJpakQrVGFrUThBTVRtNWtoc0YwSjJmb2o5UXpPRU00b3VaanI3SXkwSjYzdHRab21jV1RWMkt4WXpBQjQ3NGcvMWNNSHUxODM1TW9seDQrbEUxUklNbnN4Misyb05RNHZ4Yk5aTlZMdVV0S1hVd1pncG1TWklKVVp2WkloSVNuajgrRU9WWW81LS1vNU51aG8rOGhCbnBRTE1jVjVBWStRPT0%3D--cbe42e296a0155432014cdd87138a5e247a12d16;
+        path=/; HttpOnly
+      Keep-Alive:
+      - timeout=15, max=100
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA6Vca3faSNL+7l+haM4atBYCcTdYZB3H2cm7uY3jZDPr4+PT
+        SC1QLNREF2PW9n9/q7ol1DIga3fnzBj6Ul3V1U9d+sKcvHr7+ezyzy/nyjxe
+        +JODE/xQfBLMrBoNalhBiQMfCxoTxWZBTIPYqsX0Pm5i17Fiz0kY0dhKYrcx
+        rMEw8bJBfyXenVU7E90bl+slxaEiO/SWsRJD0VL5ED/JHRG16mTlBQ5bGZ8u
+        zr99fHys80/r4Ukb82+GF7jMelCnlIAU6kidkoURhA2HxMQIaKzqKg1DFr7Z
+        3+57Ng0i+g+6hmbqmAMydUmrCy1kuYRGEnsseP8WGs1W32z1sCUOSRARG1s+
+        kQWFNvt79OWPW/bx7N3FP9/N//Xu9Nubr29vL76fzpbT77fxH/9cvflxeWpZ
+        QPwroQm99JCsVWAi6trtfr8N9TPQEQysPp00hS7+a1XpNzdBeBOi+kNquUnA
+        Ba9TPdBj7SErK2EdSp5bfxVcxdfawx0JFWbhd+uB3i9ZGEejh6enMYWaq9a1
+        YRPfrzMjbdI3wwYZKe9oXl8F1+OQxkmIHNjjY6A96UzfEGpPaSNyyiqfQAw1
+        G1G1LJwwcxV5HlpKJteNXRbWBfPWmJ3Ehk+DWTwfs6MjDWZ3xa61jShP9Qdz
+        dFWiDO3haVNiWXtKvSHb1HjQ48o2Araqa6AbFsCS1pM6CWfJAhYy0jQ9eB0k
+        vj+K514EQ0HxjnmO0uIVT08otmfRujongeNTVdMJlNqansBHR9NdbKNQb8xo
+        XEcE2jSEXjbW+4w4vBRZfNXHahI41PUC6uTaS+ER0FVIAXKHh/XsqxVpY+S/
+        tK5UMNovgL3vHl1xaOtYc5ZEMVucxnHoTZM4rTxHw/qdSxtCDXDzojkwBOw6
+        ziW7RAmh4AU+yPG7F4uGC+pTElH1WncsAL/XUHXfco5U7z5oqGNSX+rymmgP
+        EeDHYnXnKNBfcXPxVA0gHRkwFgp6yvvyHmqhSoX+2I+LH4awCBcMZMdJid5h
+        VhQ9gwx8VqYWIPbAVYXC0K2tRUf9KaFYEO2Ja3BhhcYyZDHjJvpgh5TElGsi
+        HBXnhb1jsE49tDgimLUD8MF4Ay//KFvzDc50qsfXeqjpkmRgOK5BF15cr7PX
+        KviPgDVU7Uh1g0YUkzCWqEOdXSMQmRaH6wzHgYEOaV3nMuXofYLVBXtfP6SD
+        43g0cPLRcKQn+AdWELGBatXhcwMZPSJ3VPdmAQupzoLzwNFBbTwU3Mc6FUXV
+        iMAZwui6qj2DwULAwD8KcPWzFQLeMbhvjkTJsWkPagR8g1muSQpwp7iyCu8M
+        fTTdq2NwgDlQPZsFzEF/eLrW26WuQVrAK1gAS1V1DzwOeh8w4kChGhPukcLq
+        AOP4yru2gnqo06vwGvgeWebGEcVPwmF9nv6kdpyDx5iT6PMq+BKyJQ3j9TiH
+        ZyhE7LwkItYEEAcCC9C9yyHEKJpFX9PUT45a2saDhlbDBEzGDRihBbM7DUOy
+        rrOT1uvWiGnjo6PwhI01D+YDfj44Cjc+3nvakrS7LWneB2KLF0FokQR89cxj
+        gQJArAUJbFjF7Toj9haw1oeH1YZIuxsBufNmPO5+RcNIF57S/yQoSG0cdqkO
+        QEwKOACDA34gRPiajuhrF8ZLdE8beeAtNnRxPUZLhHoeex2DTEEv1Hl8hBoc
+        SLTnK0MASQzDwgLiNYSFJF09iAStsX3ijm2IdsmVfZ1aMgEMpt49ulpDkN0s
+        1fLwcGksk2hev5rqyIUAOMlTLpufIv2KXgM3qmVxLZDkX0jzxo6Pj1fXeetK
+        al3iMEvehYHoeaeZYGPDh6R6RIkF6FNd8KFJCF4ahbcCPUATiwDYPDRcgc1q
+        3Ibu0Juu8c/UemDByNfRVY1i9Cyjle4DzGhAw2i00G3hd0aBPk1cF3zzTOdq
+        HxE9Vf/olfmU6Wmai+rlEZ87/7yFQEsdotLSe3yMjFRmNP7NiloQvyLLMabE
+        vvXZDDMzLndiqUH4t1QkVQT6GYvS2N7GoA5zWuIfx8oNh9W1cT5YJOALdFXc
+        AiBt46ECLUulKKZqwvghoI2hU+qUhFVlrujwMK2+petIjh07e3OW4Cz9hI5C
+        fRV6MZn6dAS6oAEEl1CUTHDq4RNgy57XAfdPkkRWCC3/pY8UudTLGgETeWCG
+        wEIdEIpBlYlIJyhSAQopWJaoyWz10KCQXgjunlPOWcSQYBOiUry9ogB6xqcK
+        fswKwLFtMgMsv26YI2pZlnBt4I8JDO7p2zkppL1PmeQm+HCEmQcxm2wQtq0x
+        kUm+4APRUd2Dl+HyU2sudmH5hkwPAOago3Of8vThzfqSzDAlgNxA7FU02EEg
+        wCBFwF0PZGJoO2gneod2Nf1VHV2fke/NsFTYjx0e5sBNSQGzdn0t7URQcIQQ
+        +AqOpBhzB9hZLEh4C2FfZQFOFxRS147mBnNdEOdaxyw9TTTHIsg7hkjk0vnk
+        sxjHRhTalorb22jUbKpHICVu3CCbXBLMOT8xh4JOIsDnGwouHN05uE85ikC2
+        YrPF0qeQWMOyOgbwctYQlGLQQSFWoPeRxHfYIt1Ll0yh6KFShZ0bIupCAJAC
+        I6RArz+SeG5AZhw49WdNdU0b1ROLd1iQ+zrPft+CkNwccBUhp0w0rZGJkTq3
+        nf3cwk5n4+dS+wJnJ8ANDm9pOMzmWSjsEzDDP7+D7x9SZ67qC6iMY2LPeb2q
+        r4Dix8cPv8OKXMCukEbg/60V5A2520iPDpj18PVylCNQ//p+tMTtwvvFgjoe
+        SKyfXY5s2K6EWY8fv19AJLk4/wM6ZqOff4cCZ65/uYCv4I0WXkT1j5+h8DGJ
+        OV4/TwEBdzQUu4Q7yBiPfCagjCFLHF/sOJ2QDi92tHKojdSfUYN/22ztIE4v
+        mtDTbHW7BiQ7xs9IxagIaoA0aXblXx8evmqehd7nr00jhknU02SIhUYCgp7i
+        aJo+l6LNg1jTUaIDFCBMstCbecHoTk8jHZ4N6Pfz8J8hWCn36dOnMa2bmu4A
+        u9d1/FtX337+mCL2A/oZMD1PfwV9lrxVGGOINQA152oBdSzg1hChNdgAmBnk
+        AQwJRGNKohXM2vXCKJ6ucZ+abJvzvdXSzwFpXY17PPwDNOkO+lobS8ctxdOt
+        lefEc8uhd+CUGrygo7IaEQRSnLEVQBYXeLFHfF5HwemCoXiLZJGVa0qA28/a
+        HeyuUa+1LSZZj7dUSAEAwU6xF/t0cvAlN8mDR+WLT4IAUtlT2IDH0cFJM+11
+        AhvuWwWQYME2aO1T2JUDWhQOagt9F6WBroA5YIjBqKLMQ+paapNEsMRRU/Kz
+        jd6g07WHgzad2m7PdKd0QI9t0+5Rc0iOqXNs2FGkKs2XmC5hNxY/58MrG6bb
+        ce1Wnw6HQ9Putgc9Yh/3pua0ZU6nJqUSh1eNxpXnKu/Pr//3OXq0Ybt9tzWc
+        EndI+72u2z52B73W0D22p8Pj6cCkEuMr2KB67nWjgWdwyE4cwYkDT+gGS3Q3
+        +qvyoEzpHCyJhaMk9Ou/QSZEEj/+7fvHD9r4CRaI0+bneIXYQX6Se2PG2Awc
+        ztKLuA1jXdP3plHzJzibcN00jaHRSguZZU+2DggnB4oCiqqnicXPP7C7YllK
+        bbNDqmnKA/RSlMy7Gpia0XoSAPDIktZrf+mclR43CukzfQqRGly+TLC/dM5h
+        kFQ4KNQ0bQw8uSIygSss4xZsfGLTOfPBXm+WzF+7nu8jy4bba7e6tN21+50+
+        NU1n2B8MHPhv0Gl3p3bPzhdU1n/psJKmYT2mrNEf9s1Wv2+2+8etge20hg4B
+        jtNB93jYJcdm7/mCcOvmJq3aUeg2ICsgC3Vj7ypJ4jl88WwvXt/E7Ban29xB
+        lzZt6Kb/ent05nz68c79FXy6+/br7PuP+4v7ZHb+48/hl5/muw/Df8/W63+R
+        gd3sXrz7cdsc/v5vJ+i+u/zs/7n89uYT/cc89O79u98H3o/3nf8zf/3o2fd4
+        Po3cYYHS8/0pc9bw4Xh3iudYNawFj7dCJ0/DWtpi+6BCq4ayEcBWWJP61iRq
+        dOLRFHzWjmqo6LeNgbIArfNkJfdBkRLBlBVihyyKlNMkikPiewSEhBEmm4+5
+        OTkhGVTUSdE5njQJrAp0gX7tycH5gni+QniTAhayTDsX2B6c0MUkgOivrFly
+        0oQC6qVdnPTcc2gtZ/xbukDq5Outt1TyMwYhgJA0mziYXYKK8BazdDg1ZjOw
+        /2e2hf0aXbczBLx1+z1z0G93222Hdqak3e2T3nGL9vvGMpipMCXAxkforyoi
+        XKmdFtgP9WbzWHxHcCV+vma+T5YRVWAejrjZ8b2CHr+CAuw5ig+zx7ZCu1Bh
+        M/JmQbKEzvCpfFvu6+2SX2AcZDqFpBpDlVV7hyf3oC9/rZDoljoKz6lQ+7XJ
+        u9M/YCDojGOh9ra5g/FAIhJ7FIzujEF+BXnQPuaQfHrBHfPvIO2Y/J3Gyvu0
+        tHduS685Z6uYie5gp5jGkr3CTCFDVCen+LE1ZLq8Dgsgj2mg02sI+9g4N96E
+        E29CFqdO3sC+XtnGcDpoM/Enz/EvPiR0gS2+ZKkKdpJtMYXvs/4ufMwbCxpF
+        oN+axAsMSkpJJAPrtQftYwWiD2xrDmAjpCBCYHmTpQK9tzMXblbw54wt+I5R
+        ARew0yi3LRBvGuNaKj2nbkg7l4Zo3tgeP33Y25m34gQhBCK7ycEn2LzANkUR
+        GyeURkxKScmx5rm7gnR9rjhkDfPajHMSpx41DnlhgjsiyNjmovQOU1YwisVm
+        YBpGefPFhvtWa5MP2NwMn3rsjE27ZQ4arWHDNLPRnMkQvjriazv9KkbZImrl
+        RGYnp+qWUrWOc6p2K6fqlFMNc6puN6fql1MNJF7Hlan60rz6lefVk6gkCYfl
+        VN2cqt/Oqcxy1bc6u1X/wsTauyf2guolbAxyokEJ0aDRMXezapVTtXayKpvV
+        oNGWANWrNikgkvAkqb1siYFIglOnMicJTcOqimhLYJK0VwYKIJKw1K0snoyk
+        iuYIVO2dOi/HRNvcSfSCzls7icohYUqQMNtV5TOHO5VeLp852En0AicJE5VN
+        ypQwcVxZPAkT3Mk7RVXuoersnFSZKwOi9k75XpiUuZPoBfFaO4nKMdHag4mN
+        VvaQDXcr8LicarenKJ9WIe60K1P19syrnErChRyFy1dLDjv9QWVlyGFHsuFy
+        OMlhRw5xZVT9QgQxK4aQfiGEVM1k+oUYYlbUYb8QRIaVBZSgUdHL9AtBRFJ7
+        GZz6hSAyqKwJCRcVXVO/EENMSRNlkadfCCJmRTfTL0SRih6jvzeKlFlWf18U
+        KYv3/UIUkTiVxft+IYr0KosngWJQmVN3p/peIOrsVl/5+u6JIuWgNXdnFi/I
+        tzuzKCeSo0jFDLpfiCEVE4t+IYRUV18hhlQ2qn0xpNyoWrtRUb5UcgiR5CsH
+        bWuPq3iBlewqpBUui1a94s7FrLZavULcqZiw9wphp6Ir6xWiTsX40SsEnYoG
+        3CsEnYqhoFcIOnJQfEE+OU2V9Fe2wL3i3sWsPK096UgZBHvFuFMxZ+8V4o5M
+        VWaOvULg6VRMH3uFwGNWXi858simVT4vOfSYFTeAvULskXm9IKGMjVbV9ZKj
+        T8XNcK8QfMy9u81mdorW5AeCk90XdrYT/IwM22eJ4/okpM9u7JxOs2P0DLMN
+        3/Zf1RVP+qOY2LfUuYHRyA0/uWxQt+sckzYdTjttpz2we8O+Q3vd/sCddnvH
+        vcH+G8B0sFMYC98vRDT0aFTnl354T7HnqFTVRY9slqvVyshOYsVpv8HCmUGS
+        pkTaTIeLQBp8eS2G+F/OTlUYgt8Wwr/NpvKR3FJ+Ai/Ob1ngr5U7L/KwEDNF
+        XBQqIT9Sj4CEv9vhXa38hjN/kfRm/d6pl5wAa4Ixv0PFCoOfNeOjk+za9Fk1
+        vkav16KwgZLVxDWnQv2IbnfHd1DKkaXUlKz780vRl072+YXZnqN93qbkV3Gi
+        Ff7Ou5PLuRcpK0pvT5pQwmugCb/uOZDvPPK1UCcrXCrfp3ZMHUDWkgQZmyBZ
+        THH0jn6MQRibJgf40Kd4gZbdlGyxKV4brVkCa2dT724fH9Ps6UM8FhacqHR/
+        9x9xKVxD7GbVw/CRT6gaqwz/gssCYLhnHv2ePHhGJg9c5W5nc1m0BwV5u7hu
+        VaQbH7xarwlAvPPAOot3MUoSUTfxX6cQWWYjcrIGusWawBGQ0iWFP0GcPbNQ
+        oDpMAmW6VoiCz5t8/jMwL17r3HZBXeLaT72E0meg3lzmKu/wyRmXWZkmnu9E
+        igsmDbbN/IhbuLcAYLlrPpDjRTbe9q25ewGJ+R1uMgXkKfx1VHarJjsxBvxI
+        xs/dsEu9mTrZJw8ujfFcSzDTJVvRELAEs40WxPdhjuS+4VAnsWPulzaLAFNh
+        Cy546v9Wc8al9mI+tZisFXw2GYKSFX6NqIinTnzmQOeFQp2HwTRajjE4GMp7
+        V5QQby6uIwwm1k4Ham+Jj6Rx8GSJD41E3+IkjJPmkmM4vZycJnHM1Y8fDf4G
+        EKcnihDgZjQrkPTpN8dE+lI1W1ruqclm8pIMz3VIxJ3qPr0f/tY5HqO/mkZe
+        TGFJWXAGC3xrqTcz8it9t8473eAPY275Ezxe1hX+8TbTv1xp4xC5dHgTKzdL
+        a8ZYDOYi7Ie3XWvj//y2drf9isGrvaMQfWsT+dr+ltKlF8QssefplX36pCFB
+        teZ+CetiNuIj2vHfdsZxdVLanN86Cz5nc1i3lRfPkRdo8BK+g3w5T7Q5MLlY
+        1POkqDiwOvnbLlWV0BdMF8gLkHku4FeWhDYGLvTB5JkjmIHgyXR70C0RK3aU
+        mQvHLS0kI27qaA9Og40stXSC5f6olr2QKHOVtVKndfBFuOWD1JfPe5PPYHCh
+        smJg2SF4isxxpx4qwdv1npQYbKkPyNd3AEfwVeB3skRQhYhA18p3aAARQuVP
+        lhQD5dY46I9DfJMSs9uArfKBLrBSuWTKP6C6wiAFJebDFNSC1SVDpSNRXzwU
+        9ClxfZpnuerkPG1RPqRNW8EalHYBqacCyFOmPps9U+M2DF+OR00cB5hX6LWN
+        wd3JQ74zqG+eyHt6pDN9hr/90Rfag3dV+zt/gXgaEH8de3YkfnJRu7bCMf+x
+        F/55fJR+a4DDYaXxyxIf+AMgTbhn6feDOm/0LfOv2XPwujYmVvTsZT3TcO+w
+        gPqdPx9g/HcDxCDROrAtE77h9mk2Xux9bY/TwvRaq2cvyrPX5DWhj5peE+sh
+        nl42SDZzsZ3blH5G0HNGatmmZEZgA8Flr+lK7dtpo2O2Bse9YaOPZZLETHTF
+        fhHkSVi7JDOKT3+xRU73pa1gLYPIgiyj589BsY4/S/oZvb6la+v0/b/J1/Xb
+        i5sGPb8x3wQ3vYHX+PuicW5/+Dj8NrjtsRa9SaJDsliO76wO/4S9aUhwJ2jx
+        B4+iMaQz/IUrdzv5w9b8sWftpY1r4ckwaZvucWvQGtrUHR6TTqc7pF3aoXTY
+        7ZHW8bMdK253su22+L8N/D+oZqybfkAAAA==
+    http_version: 
+  recorded_at: Sat, 12 Aug 2017 08:55:52 GMT
+recorded_with: VCR 3.0.3

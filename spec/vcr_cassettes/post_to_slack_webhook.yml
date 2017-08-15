@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://hooks.slack.com/services/AAAAAAAAA/HHHHHHHHHH/!!!!!!!!!!!!!
+    body:
+      encoding: UTF-8
+      string: '{"username":"Jacaranda","text":"hello"}'
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '39'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '22'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Encoding:
+      - gzip
+      Date:
+      - Sun, 13 Aug 2017 13:17:44 GMT
+      Referrer-Policy:
+      - no-referrer
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Slack-Backend:
+      - h
+      X-Cache:
+      - Miss from cloudfront
+      Via:
+      - 1.1 5672636208e8fb405fd765eca1216f8a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - b205fUgfdNqoWxw46r9Eda6Mr3X1gbcANKv19hD2Ou7U5VWE7BoaIA==
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA8vPBgBH3dx5AgAAAA==
+    http_version:
+  recorded_at: Sun, 13 Aug 2017 13:17:44 GMT

@@ -46,15 +46,21 @@ Then run the scraper with:
 bundle exec ruby scraper.rb
 ```
 
+And run the tests with:
+
+``` bash
+bundle exec rspec
+```
+
 ## Usage
 
-This program depends on three environment variables:
+This scraper requires three environment variables:
 
-* *GitHub OAuth token* for your GitHub account
-* *Slack channel webhook url* to post the message to
-* *Live mode* to make it actually post to the Slack channel `#townsquare` and save to the database
+* `MORPH_GITHUB_OAUTH_ACCESS_TOKEN` to talk to the GitHub API. You must generate a [personal access token](https://github.com/settings/tokens) with the `repo` permission.
+* `MORPH_SLACK_CHANNEL_WEBHOOK_URL` to post the message to a channel in Slack. You can get a URL by adding an _Incoming Webhook_ customer integration in your Slack org.
+* `MORPH_LIVE_MODE` determines if the scraper actually posts to the Slack channel `#townsquare` and save to the database
 
-In local development you can add these to a `.env` file and [use dotenv](https://github.com/bkeepers/dotenv) to load them as the scraper runs:
+When developing locally, you can add these environment variables to a [`.env` file](https://github.com/bkeepers/dotenv) so the scraper loads them when it runs:
 
 ``` bash
 MORPH_SLACK_CHANNEL_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXXXXXXX"
@@ -62,9 +68,15 @@ MORPH_GITHUB_OAUTH_ACCESS_TOKEN=XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 MORPH_LIVE_MODE=false
 ```
 
-Create a `.env` file using the example provided by running `cp .env.example .env`.
+Create a `.env` file using the supplied example by running:
 
-### Running this on morph.io
+```
+cp .env.example .env
+```
+
+Then edit to taste.
+
+### Running the scraper on morph.io
 
 You can also run this as a scraper on [Morph](https://morph.io).
 
