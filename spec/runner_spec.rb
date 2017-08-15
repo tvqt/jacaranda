@@ -101,6 +101,8 @@ end
 
 describe 'post' do
   after(:each) { restore_env }
+  after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
+
   it 'messages Slack' do
     VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
       url = Faker::Internet.url('hooks.slack.com')
