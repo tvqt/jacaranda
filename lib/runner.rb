@@ -79,7 +79,10 @@ module Jacaranda
       end
 
       def build
-        raise
+        [
+          'This is a stub runner.',
+          "You should inherit #{self} and override.",
+        ]
       end
 
       def post(message)
