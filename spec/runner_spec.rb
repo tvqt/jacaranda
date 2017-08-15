@@ -86,26 +86,10 @@ describe '#posted_in_last_fortnight?' do
   end
 
   context 'when there is no schema or data' do
-    before(:each) do
-      # Create a new connection to new sqlite
-      ScraperWiki.close_sqlite
-      ScraperWiki.config = { db: Tempfile.new.path }
-      ScraperWiki.sqlite_magic_connection.execute('PRAGMA database_list')
-    end
-
     it do
       expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
     end
-
-    after(:each) do
-      # Reset sqlite connection
-      ScraperWiki.close_sqlite
-      ScraperWiki.instance_variable_set(:@config, nil)
-      ScraperWiki.instance_variable_set(:@sqlite_magic_connection, nil)
-    end
   end
-
-  after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
 end
 
 describe '#posts' do
@@ -198,6 +182,5 @@ describe '#post_to_slack' do
 
   after(:each) do
     restore_env
-    ScraperWiki.sqliteexecute('DELETE FROM data')
   end
 end
