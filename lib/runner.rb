@@ -16,9 +16,11 @@ module Jacaranda
 
         if posted_in_last_fortnight?
           puts 'We have posted an update during this fortnight.'
+          false
         else
           puts 'We have not posted an update during this fortnight.'
           scrape_and_post_message
+          true
         end
       end
 
