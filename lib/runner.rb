@@ -37,11 +37,19 @@ module Jacaranda
         exit(1)
       end
 
-      def posted_in_last_fortnight?
-        query = "* from data where `date_posted`>'#{1.fortnight.ago.to_date}'"
-        ScraperWiki.select(query).any?
+      def posts
+        query = "* from data where runner = '#{self.to_s}'"
+        posts = ScraperWiki.select(query)
+        posts.map { |post|
+          post['date_posted'] = Date.parse(post['date_posted'])
+          post
+        }
       rescue
-        false
+        []
+      end
+
+      def posted_in_last_fortnight?
+        posts.any? {|post| post['date_posted'] > 1.fortnight.ago}
       end
 
       def morph_live_mode?
@@ -97,7 +105,12 @@ module Jacaranda
       end
 
       def record_successful_post(message)
-        ScraperWiki.save_sqlite([:date_posted], date_posted: Date.today.to_s, text: message)
+        record = {
+          date_posted: Date.today,
+          text: message,
+          runner: self.to_s
+        }
+        ScraperWiki.save_sqlite([:date_posted, :runner], record)
       end
 
       def print(message)

@@ -53,6 +53,26 @@ describe '#posted_in_last_fortnight?' do
   end
 end
 
+describe '#posts' do
+  let(:names) { 3.times.map { Faker::Name.first_name } }
+  let(:runners) { names.map {|name| Object.const_set(name, Class.new(Jacaranda::Runner))}}
+
+  after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
+
+  it 'only returns posts for the runner type', :aggregate_failures do
+    runners.each do |runner|
+      (1..10).each do |n|
+        text = Faker::RickAndMorty.quote
+        time_travel_to(n.days.ago) { runner.record_successful_post(text) }
+      end
+    end
+
+    runners.each do |runner|
+      expect(runner.posts.size).to eq(10)
+    end
+  end
+end
+
 describe '#run' do
   let(:url) { Faker::Internet.url('hooks.slack.com', '/services') }
   before(:each) {
