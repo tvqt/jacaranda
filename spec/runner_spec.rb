@@ -12,6 +12,32 @@ describe 'validate_environment_varables!' do
   end
 end
 
+describe 'Jacaranda#run' do
+  let(:names) { Array.new(3) { Faker::Name.first_name } }
+  let(:runners) do
+    sorted = names.sort_by { |c| c.to_s.split('::').last }
+    sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::Runner)) }
+  end
+
+  it 'executes all runners by default' do
+    expect(Jacaranda.runners.size).to be >= 2
+  end
+
+  it 'filters to a single runner' do
+    args = %w[--runners] << runners.first.to_s
+    Jacaranda.parse(args)
+    expect(Jacaranda.runners.size).to be 1
+    expect(Jacaranda.runners).to eq([runners.first])
+  end
+
+  it 'filters to multiple runners' do
+    args = %w[--runners] << runners[0..1].join(',')
+    Jacaranda.parse(args)
+    expect(Jacaranda.runners.size).to be 2
+    expect(Jacaranda.runners).to eq(runners[0..1])
+  end
+end
+
 describe '#posted_in_last_fortnight?' do
   after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
 

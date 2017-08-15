@@ -36,4 +36,4 @@ module Jacaranda
   end
 end
 
-Jacaranda.run if $PROGRAM_NAME == __FILE__
+Jacaranda.run(ARGV) if $PROGRAM_NAME == __FILE__
