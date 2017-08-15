@@ -3,12 +3,13 @@
 require 'scraperwiki'
 require 'rest-client'
 
+# Wrapper for all runners
 module Jacaranda
   def self.run
     self::Runner.descendants.each(&:run)
   end
 
-  # Boilerplate for running the stat scraper
+  # Boilerplate for running stat scrapers
   class Runner
     class << self
       def run
@@ -38,18 +39,18 @@ module Jacaranda
       end
 
       def posts
-        query = "* from data where runner = '#{self.to_s}'"
+        query = "* from data where runner = '#{self}'"
         posts = ScraperWiki.select(query)
-        posts.map { |post|
+        posts.map do |post|
           post['date_posted'] = Date.parse(post['date_posted'])
           post
-        }
+        end
       rescue
         []
       end
 
       def posted_in_last_fortnight?
-        posts.any? {|post| post['date_posted'] > 1.fortnight.ago}
+        posts.any? { |post| post['date_posted'] > 1.fortnight.ago }
       end
 
       def morph_live_mode?
@@ -70,16 +71,13 @@ module Jacaranda
       end
 
       def post_message_to_slack(text, opts = {})
-        options = {
-          username: 'Jacaranda',
-          text: text
-        }.merge(opts)
+        options = { username: 'Jacaranda', text: text }.merge(opts)
         url = options.delete(:url)
         raise ArgumentError, 'Must supply :url in options' unless url
 
         begin
           RestClient.post(url, options.to_json) =~ /ok/i
-        rescue RestClient::Exception => e
+        rescue RestClient::Exception
           false
         end
       end
@@ -93,7 +91,7 @@ module Jacaranda
       def build
         [
           'This is a stub runner.',
-          "You should inherit #{self} and override.",
+          "You should inherit #{self} and override."
         ]
       end
 
@@ -112,9 +110,9 @@ module Jacaranda
         record = {
           date_posted: Date.today,
           text: message,
-          runner: self.to_s
+          runner: to_s
         }
-        ScraperWiki.save_sqlite([:date_posted, :runner], record)
+        ScraperWiki.save_sqlite(%i[date_posted runner], record)
       end
 
       def print(message)

@@ -16,7 +16,7 @@ class RightToKnow
       #       Remove this logic and just get the results, once
       #       https://github.com/openaustralia/righttoknow/issues/673 is fixed.
       (1..10).to_a.reverse.each do |n|
-        page = Mechanize.new.get("#{base}?page=#{n}")
+        page = Mechanize.get("#{base}?page=#{n}")
         return page.at('.foi_results').text.split.last if page.at('.foi_results')
         sleep 1
       end
