@@ -99,7 +99,7 @@ describe '#run' do
   end
 end
 
-describe 'post' do
+describe '#post' do
   after(:each) { restore_env }
   after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
 
