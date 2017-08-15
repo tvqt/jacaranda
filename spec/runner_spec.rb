@@ -26,6 +26,19 @@ describe '#posted_in_last_fortnight?' do
     expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
   end
 
+  it 'returns false if posted > 14 days ago', :aggregate_failures do
+    10.times {
+      # Fake a successful post
+      text = Faker::RickAndMorty.quote
+      Jacaranda::Runner.record_successful_post(text)
+      # Test now
+      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
+      # Test the future
+      time_travel_to(Date.today + 15.days)
+      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
+    }
+  end
+
   it 'handles no database' do
     # Create a new connection to new sqlite
     ScraperWiki.close_sqlite
