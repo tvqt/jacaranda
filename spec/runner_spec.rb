@@ -6,22 +6,24 @@ describe 'validate_environment_varables!' do
   after(:each) { restore_env }
 
   it 'exits if any environment variables are not set' do
-    Scraper.required_environment_variables.each { |var| unset_environment_variable(var) }
-    method = -> { Scraper.validate_environment_variables! }
+    Jacaranda::Runner.required_environment_variables.each { |var| unset_environment_variable(var) }
+    method = -> { Jacaranda::Runner.validate_environment_variables! }
     expect(method).to raise_error(SystemExit)
   end
 end
 
-describe 'posted_in_last_fortnight?' do
+describe '#posted_in_last_fortnight?' do
   after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
 
   it 'returns true if record exists' do
-    Scraper.record_successful_post('hello')
-    expect(Scraper.posted_in_last_fortnight?).to be true
+    # Fake a successful post
+    Jacaranda::Runner.record_successful_post(Faker::Lorem.paragraph(2))
+    # Then test
+    expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
   end
 
   it 'returns false if record does not exist' do
-    expect(Scraper.posted_in_last_fortnight?).to be false
+    expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
   end
 
   it 'handles no database' do
@@ -30,7 +32,7 @@ describe 'posted_in_last_fortnight?' do
     ScraperWiki.config = { db: Tempfile.new.path }
     ScraperWiki.sqlite_magic_connection.execute('PRAGMA database_list')
     # Test a query returns a false when there's no schema or data
-    expect(Scraper.posted_in_last_fortnight?).to be false
+    expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
     # Reset sqlite connection
     ScraperWiki.close_sqlite
     ScraperWiki.instance_variable_set(:@config, nil)
@@ -44,7 +46,7 @@ describe 'post' do
     VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
       url = Faker::Internet.url('hooks.slack.com', '/services')
       set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
-      Scraper.post(Faker::Lorem.paragraph(2))
+      Jacaranda::Runner.post(Faker::Lorem.paragraph(2))
       expect(a_request(:post, url)).to have_been_made.times(1)
     end
   end
@@ -53,8 +55,8 @@ describe 'post' do
     VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
       url = Faker::Internet.url('hooks.slack.com', '/services')
       set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
-      Scraper.post(Faker::Lorem.paragraph(2))
-      expect(Scraper.posted_in_last_fortnight?).to be true
+      Jacaranda::Runner.post(Faker::Lorem.paragraph(2))
+      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
     end
   end
 
