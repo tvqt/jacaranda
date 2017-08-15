@@ -17,8 +17,8 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
   gem 'delorean'
+  gem 'faker'
   gem 'rspec'
   gem 'rubocop'
   gem 'vcr'

@@ -27,7 +27,7 @@ describe '#posted_in_last_fortnight?' do
   end
 
   it 'returns false if posted > 14 days ago', :aggregate_failures do
-    10.times {
+    10.times do
       # Fake a successful post
       text = Faker::RickAndMorty.quote
       Jacaranda::Runner.record_successful_post(text)
@@ -36,7 +36,7 @@ describe '#posted_in_last_fortnight?' do
       # Test the future
       time_travel_to(Date.today + 15.days)
       expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
-    }
+    end
   end
 
   it 'handles no database' do
@@ -54,8 +54,8 @@ describe '#posted_in_last_fortnight?' do
 end
 
 describe '#posts' do
-  let(:names) { 3.times.map { Faker::Name.first_name } }
-  let(:runners) { names.map {|name| Object.const_set(name, Class.new(Jacaranda::Runner))}}
+  let(:names) { Array.new(3) { Faker::Name.first_name } }
+  let(:runners) { names.map { |name| Object.const_set(name, Class.new(Jacaranda::Runner)) } }
 
   after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
 
@@ -75,14 +75,14 @@ end
 
 describe '#run' do
   let(:url) { Faker::Internet.url('hooks.slack.com') }
-  before(:each) {
+  before(:each) do
     set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
     set_environment_variable('MORPH_LIVE_MODE', 'true')
-  }
-  after(:each) {
+  end
+  after(:each) do
     restore_env
     ScraperWiki.sqliteexecute('DELETE FROM data')
-  }
+  end
 
   it 'does not run the scraper if posted in the last fortnight' do
     # Fake a successful post
