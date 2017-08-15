@@ -6,6 +6,7 @@ require 'webmock/rspec'
 require 'addressable'
 require 'vcr'
 require 'faker'
+require 'delorean'
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
@@ -15,6 +16,8 @@ end
 RSpec.configure do |config|
   # Use color not only in STDOUT but also in pagers and files
   config.tty = true
+  # Time-based test helper
+  config.include Delorean
 end
 
 def restore_env
