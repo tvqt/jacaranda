@@ -6,7 +6,13 @@ require 'rest-client'
 # Wrapper for all runners
 module Jacaranda
   def self.run
-    self::Runner.descendants.each(&:run)
+    runners = self::Runner.descendants.sort_by {|c| c.to_s.split('::').last }
+    puts 'These are the runners we will execute:'
+    puts
+    puts runners.map { |r| r.to_s.split('::').last }.join("\n")
+    puts
+    sleep(2)
+    runners.each(&:run)
   end
 
   # Boilerplate for running stat scrapers
