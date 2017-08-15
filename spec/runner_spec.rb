@@ -3,23 +3,22 @@
 require 'spec_helper'
 
 describe 'validate_environment_varables!' do
+  let(:envvars) { Jacaranda::Runner.required_environment_variables }
+  subject { -> { Jacaranda::Runner.validate_environment_variables! } }
+
   context 'when all environment variables are set' do
-    let(:envvars) { Jacaranda::Runner.required_environment_variables }
     before(:each) { envvars.each { |var| set_environment_variable(var, Faker::Name.first_name) } }
 
     it 'does not exit' do
-      method = -> { Jacaranda::Runner.validate_environment_variables! }
-      expect(method).to_not raise_error
+      is_expected.to_not raise_error
     end
   end
 
   context 'when any environment variables are not set' do
-    let(:envvars) { Jacaranda::Runner.required_environment_variables }
     before(:each) { envvars.each { |var| unset_environment_variable(var) } }
 
     it 'exits' do
-      method = -> { Jacaranda::Runner.validate_environment_variables! }
-      expect(method).to raise_error(SystemExit)
+      is_expected.to raise_error(SystemExit)
     end
   end
 
