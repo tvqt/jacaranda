@@ -14,6 +14,7 @@ gem 'scraperwiki', git: 'https://github.com/openaustralia/scraperwiki-ruby.git',
 
 group :development do
   gem 'pry'
+  gem 'rake'
 end
 
 group :test do

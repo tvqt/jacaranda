@@ -129,6 +129,7 @@ DEPENDENCIES
   mechanize
   octokit (~> 4.0)
   pry
+  rake
   rest-client
   rspec
   rubocop
