@@ -9,6 +9,7 @@ class RightToKnow
       start  = period.first.strftime('%D')
       finish = period.last.strftime('%D')
       base = "https://www.righttoknow.org.au/search/#{query}%20#{start}..#{finish}.html"
+      agent = Mechanize.new
       # TODO: This iterates through pages looking for one with trustworthy
       #       results. It's guessing that the page number of the last page
       #       of results is no greater than 10. This is based on Right To Know's current usage,
@@ -16,9 +17,8 @@ class RightToKnow
       #       Remove this logic and just get the results, once
       #       https://github.com/openaustralia/righttoknow/issues/673 is fixed.
       (1..10).to_a.reverse.each do |n|
-        page = Mechanize.get("#{base}?page=#{n}")
+        page = agent.get("#{base}?page=#{n}")
         return page.at('.foi_results').text.split.last if page.at('.foi_results')
-        sleep 1
       end
     end
 
