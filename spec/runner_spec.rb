@@ -40,6 +40,32 @@ describe '#posted_in_last_fortnight?' do
   end
 end
 
+describe '#run' do
+  let(:url) { Faker::Internet.url('hooks.slack.com', '/services') }
+  before(:each) {
+    set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+    set_environment_variable('MORPH_LIVE_MODE', 'true')
+  }
+  after(:each) {
+    restore_env
+    ScraperWiki.sqliteexecute('DELETE FROM data')
+  }
+
+  it 'does not run the scraper if posted in the last fortnight' do
+    # Fake a successful post
+    Jacaranda::Runner.record_successful_post(Faker::Lorem.paragraph(2))
+    # Then run the runner
+    expect(Jacaranda::Runner.run).to be false
+  end
+
+  it 'runs the scraper if there are no posts in the last fortnight' do
+    VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
+      expect(Jacaranda::Runner.run).to be true
+      expect(a_request(:post, url)).to have_been_made.times(1)
+    end
+  end
+end
+
 describe 'post' do
   after(:each) { restore_env }
   it 'messages Slack' do
