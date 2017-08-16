@@ -145,10 +145,10 @@ class Scraper
       validate_environment_variables!
 
       if posted_in_last_fortnight?
+        puts 'We have posted an update during this fortnight.'
+      else
         puts 'We have not posted an update during this fortnight.'
         scrape_and_post_message
-      else
-        puts 'We have posted an update during this fortnight.'
       end
     end
 
