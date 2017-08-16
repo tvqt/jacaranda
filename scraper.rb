@@ -142,7 +142,7 @@ end
 class Scraper
   class << self
     def run
-      validate_environment_varables!
+      validate_environment_variables!
 
       if posted_in_last_fortnight?
         puts 'We have not posted an update during this fortnight.'
