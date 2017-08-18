@@ -4,6 +4,7 @@ require 'mechanize'
 require 'rest-client'
 require 'json'
 require 'active_support/all'
+require 'octokit'
 
 # Duck punches
 class Numeric
@@ -105,6 +106,47 @@ class PlanningAlerts
       end
 
       count
+    end
+  end
+end
+
+# PlanningAlerts contributor stats from GitHub
+class GitHub
+  class << self
+    def commits_text(period:)
+      puts 'Collect information from GitHub'
+      if commits_count(period: period).zero?
+        nil
+      else
+        "You shipped #{commits_count(period: period)} commits in the same period."
+      end
+    end
+
+    private
+
+    def commits_count(period:)
+      github = Octokit::Client.new
+      github.auto_paginate = true
+      repo = 'openaustralia/planningalerts'
+      params = { since: period.first, until: period.last }
+      commits = github.commits(repo, params)
+      commits.size
+    end
+  end
+end
+
+module Jacaranda
+  # The runner for PlanningAlerts
+  class PlanningAlerts < BaseRunner
+    class << self
+      def build
+        [
+          ::PlanningAlerts.new_subscribers_text(period: last_fortnight),
+          ::PlanningAlerts.new_unsubscribers_text(period: last_fortnight),
+          ::GitHub.commits_text(period: last_fortnight),
+          ::PlanningAlerts.total_subscribers_text
+        ]
+      end
     end
   end
 end

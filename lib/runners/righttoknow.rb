@@ -48,3 +48,18 @@ class RightToKnow
     end
   end
 end
+
+module Jacaranda
+  # The runner for RightToKnow
+  class RightToKnow < BaseRunner
+    class << self
+      def build
+        [
+          ::RightToKnow.new_requests_text(period: last_fortnight),
+          ::RightToKnow.annotations_text(period: last_fortnight),
+          ::RightToKnow.success_text(period: last_fortnight)
+        ]
+      end
+    end
+  end
+end

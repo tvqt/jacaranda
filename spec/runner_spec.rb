@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe 'validate_environment_varables!' do
-  let(:envvars) { Jacaranda::Runner.required_environment_variables }
-  subject { -> { Jacaranda::Runner.validate_environment_variables! } }
+  let(:envvars) { Jacaranda::BaseRunner.required_environment_variables }
+  subject { -> { Jacaranda::BaseRunner.validate_environment_variables! } }
 
   context 'when all environment variables are set' do
     before(:each) { envvars.each { |var| set_environment_variable(var, Faker::Name.first_name) } }
@@ -29,7 +29,7 @@ describe 'Jacaranda#run' do
   let(:names) { Array.new(3) { Faker::Name.first_name } }
   let(:runners) do
     sorted = names.sort_by { |c| c.to_s.split('::').last }
-    sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::Runner)) }
+    sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
   end
 
   it 'executes all runners by default' do
@@ -57,15 +57,15 @@ describe '#posted_in_last_fortnight?' do
   context 'if record exists' do
     it do
       # Fake a successful post
-      Jacaranda::Runner.record_successful_post(text)
+      Jacaranda::BaseRunner.record_successful_post(text)
       # Then test
-      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
+      expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be true
     end
   end
 
   context 'if record does not exist' do
     it do
-      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
+      expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
     end
   end
 
@@ -74,19 +74,19 @@ describe '#posted_in_last_fortnight?' do
       10.times do
         # Fake a successful post
         text = Faker::RickAndMorty.quote
-        Jacaranda::Runner.record_successful_post(text)
+        Jacaranda::BaseRunner.record_successful_post(text)
         # Test now
-        expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
+        expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be true
         # Test the future
         time_travel_to(Date.today + 15.days)
-        expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
+        expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
       end
     end
   end
 
   context 'when there is no schema or data' do
     it do
-      expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
+      expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
     end
   end
 end
@@ -95,7 +95,7 @@ describe '#posts' do
   let(:names) { Array.new(3) { Faker::Name.first_name } }
   let(:runners) do
     sorted = names.sort_by { |c| c.to_s.split('::').last }
-    sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::Runner)) }
+    sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
   end
   let(:count) { 10 }
 
@@ -127,16 +127,16 @@ describe '#run' do
   context 'posted in the last fortnight' do
     it 'does not run the scraper' do
       # Fake a successful post
-      Jacaranda::Runner.record_successful_post(text)
+      Jacaranda::BaseRunner.record_successful_post(text)
       # Then run the runner
-      expect(Jacaranda::Runner.run).to be false
+      expect(Jacaranda::BaseRunner.run).to be false
     end
   end
 
   context 'not posted in the last fortnight' do
     it 'runs the scraper' do
       VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
-        expect(Jacaranda::Runner.run).to be true
+        expect(Jacaranda::BaseRunner.run).to be true
         expect(a_request(:post, url)).to have_been_made.times(1)
       end
     end
@@ -157,15 +157,15 @@ describe '#post_to_slack' do
   context 'posting to Slack is successful' do
     it 'POSTs to webhook URL' do
       VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
-        Jacaranda::Runner.post(text)
+        Jacaranda::BaseRunner.post(text)
         expect(a_request(:post, url)).to have_been_made.times(1)
       end
     end
 
     it 'records the message' do
       VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
-        Jacaranda::Runner.post(text)
-        expect(Jacaranda::Runner.posted_in_last_fortnight?).to be true
+        Jacaranda::BaseRunner.post(text)
+        expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be true
       end
     end
   end
@@ -173,8 +173,8 @@ describe '#post_to_slack' do
   context 'posting to Slack is not successful' do
     it 'does not record the message' do
       VCR.use_cassette('post_to_slack_webhook_but_fails', match_requests_on: [:host]) do
-        Jacaranda::Runner.post(text)
-        expect(Jacaranda::Runner.posted_in_last_fortnight?).to be false
+        Jacaranda::BaseRunner.post(text)
+        expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
       end
     end
   end
