@@ -162,32 +162,66 @@ describe 'Jacaranda' do
   end
 
   describe '#run' do
-    subject { Jacaranda.runners }
-    let(:names) { Array.new(20) { Faker::Name.first_name } }
+    let(:count) { 20 }
+    let(:names) { Array.new(count) { Faker::Name.first_name }.uniq }
     let(:runners) do
       sorted = names.sort_by { |c| c.to_s.split('::').last }
       sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
     end
 
-    it 'executes all runners by default' do
-      expect(subject.size).to be >= 2
+    before(:each) { runners }
+
+    context 'filters' do
+      it 'nothing by default' do
+        Jacaranda.parse([])
+        expect(Jacaranda.runners.size).to be >= count
+      end
+
+      it 'to a single runner' do
+        args = %w[--runners] << runners.first.to_s
+        Jacaranda.parse(args)
+        expect(Jacaranda.runners.size).to be 1
+        expect(Jacaranda.runners).to eq([runners.first])
+      end
+
+      it 'to multiple runners' do
+        args = %w[--runners] << runners[0..1].join(',')
+        Jacaranda.parse(args)
+        expect(Jacaranda.runners.size).to be 2
+        expect(Jacaranda.runners).to eq(runners[0..1])
+      end
+
+      it 'runners sorted alphabetically' do
+        expect(Jacaranda.runners.size).to be >= count
+        expect(Jacaranda.runners).to eq(Jacaranda.runners.sort_by(&:to_s))
+      end
     end
 
-    it 'filters to a single runner' do
-      args = %w[--runners] << runners.first.to_s
-      Jacaranda.parse(args)
-      expect(subject.size).to be 1
-      expect(subject).to eq([runners.first])
+    context 'executes' do
+      let(:url) { Faker::Internet.url('hooks.slack.com') }
+      let(:text) { Faker::Lorem.paragraph(2) }
+
+      before(:each) do
+        set_environment_variable('MORPH_LIVE_MODE', 'true')
+        set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+      end
+
+      it 'executes the runners in alphabetical order' do
+        vcr_options = { match_requests_on: [:host], allow_playback_repeats: true }
+        VCR.use_cassette('post_to_slack_webhook', vcr_options) do
+          args = ['--runners', names.join(',')]
+          Jacaranda.run(args)
+          expect(a_request(:post, url)).to have_been_made.at_least_times(count)
+          binding.pry
+        end
+      end
     end
 
-    it 'filters to multiple runners' do
-      args = %w[--runners] << runners[0..1].join(',')
-      Jacaranda.parse(args)
-      expect(subject.size).to be 2
-      expect(subject).to eq(runners[0..1])
+    after(:each) do
+      # Reset the whitelist
+      Jacaranda.parse([])
+      # Undefine all the runners we just created
+      names.each { |name| Object.send(:remove_const, name) }
     end
-
-  after(:each) do
-    restore_env
   end
 end

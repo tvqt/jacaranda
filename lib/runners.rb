@@ -20,6 +20,7 @@ module Jacaranda
 
   # rubocop:disable Metrics/MethodLength
   def self.parse(args)
+    @whitelist = []
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
       opts.on('-r', '--runners=RUNNER[,<RUNNER>,...]', 'Runners to execute') do |r|
