@@ -53,3 +53,5 @@ def set_environment_variable(name, value)
   @original ||= ENV.to_hash
   ENV[name] = value
 end
+
+def puts(*args); end
