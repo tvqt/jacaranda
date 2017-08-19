@@ -39,13 +39,13 @@ module Jacaranda
     @whitelist ||= []
     candidates = self::BaseRunner.descendants
     candidates.select! { |c| @whitelist.find { |w| c.to_s =~ /#{w}/i } } unless @whitelist.empty?
-    candidates.sort_by { |c| c.to_s.split('::').last }
+    candidates.sort_by { |c| c.to_s.split('::').first }
   end
 
   def self.announce
     puts 'These are the runners we will execute:'
     puts
-    puts runners.map { |r| r.to_s.split('::').last }.join("\n")
+    puts runners.map { |r| r.to_s.split('::').first }.join("\n")
     puts
     sleep(2)
   end
