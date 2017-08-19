@@ -2,6 +2,14 @@
 
 require 'spec_helper'
 
+def all_requests
+  WebMock::RequestRegistry.instance.requested_signatures.hash.keys
+end
+
+def all_request_bodies
+  all_requests.map { |r| JSON.parse(r.body) }
+end
+
 describe 'Jacaranda' do
   describe 'BaseRunner' do
     describe '#validate_environment_varables!' do
@@ -163,10 +171,9 @@ describe 'Jacaranda' do
 
   describe '#run' do
     let(:count) { 20 }
-    let(:names) { Array.new(count) { Faker::Name.first_name }.uniq }
+    let(:names) { Array.new(count) { Faker::Name.first_name }.sort.uniq }
     let(:runners) do
-      sorted = names.sort_by { |c| c.to_s.split('::').last }
-      sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
+      names.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
     end
 
     before(:each) { runners }
@@ -177,14 +184,14 @@ describe 'Jacaranda' do
         expect(Jacaranda.runners.size).to be >= count
       end
 
-      it 'to a single runner' do
+      it 'to a single runner', :aggregate_failures do
         args = %w[--runners] << runners.first.to_s
         Jacaranda.parse(args)
         expect(Jacaranda.runners.size).to be 1
         expect(Jacaranda.runners).to eq([runners.first])
       end
 
-      it 'to multiple runners' do
+      it 'to multiple runners', :aggregate_failures do
         args = %w[--runners] << runners[0..1].join(',')
         Jacaranda.parse(args)
         expect(Jacaranda.runners.size).to be 2
@@ -211,8 +218,11 @@ describe 'Jacaranda' do
         VCR.use_cassette('post_to_slack_webhook', vcr_options) do
           args = ['--runners', names.join(',')]
           Jacaranda.run(args)
+
+          all_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
+          expect(all_names).to eq(names)
+
           expect(a_request(:post, url)).to have_been_made.at_least_times(count)
-          binding.pry
         end
       end
     end
