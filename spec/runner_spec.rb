@@ -230,7 +230,8 @@ describe 'Jacaranda' do
           Jacaranda.run(args)
 
           requested_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
-          expect(requested_names).to eq(names)
+          requested_names &= names # because sometimes there are partial matches
+          expect(requested_names).to eq(names.sort)
 
           expect(a_request(:post, url)).to have_been_made.at_least_times(count)
         end
