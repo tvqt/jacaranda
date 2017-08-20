@@ -236,6 +236,11 @@ describe 'Jacaranda' do
           expect(a_request(:post, url)).to have_been_made.at_least_times(count)
         end
       end
+
+      it 'exits after listing runners' do
+        args = ['--list-runners']
+        expect { Jacaranda.run(args) }.to raise_error(SystemExit)
+      end
     end
 
     after(:each) do

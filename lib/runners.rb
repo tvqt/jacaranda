@@ -26,6 +26,10 @@ module Jacaranda
       opts.on('-r', '--runners=RUNNER[,<RUNNER>,...]', 'Runners to execute') do |r|
         @whitelist = r.split(',')
       end
+      opts.on('-l', '--list-runners', 'List all available runners, then exit') do
+        list_runners
+        exit(0)
+      end
       opts.on('-h', '--help', 'Prints this help') do
         puts opts
         exit
@@ -52,5 +56,12 @@ module Jacaranda
     puts runners.map { |r| r.to_s.split('::').first }.join("\n")
     puts
     sleep(2)
+  end
+
+  def self.list_runners
+    candidates = self::BaseRunner.descendants
+    candidates.sort_by { |c| c.to_s.split('::').first }.uniq.each do |runner|
+      puts runner.to_s.split('::').first
+    end
   end
 end
