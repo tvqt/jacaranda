@@ -38,8 +38,12 @@ module Jacaranda
   def self.runners
     @whitelist ||= []
     candidates = self::BaseRunner.descendants
-    candidates.select! { |c| @whitelist.find { |w| c.to_s =~ /#{w}/i } } unless @whitelist.empty?
-    candidates.sort_by { |c| c.to_s.split('::').first }
+    unless @whitelist.empty?
+      candidates.select! do |c|
+        @whitelist.find { |w| c.to_s.split('::').first =~ /#{w}/i }
+      end
+    end
+    candidates.sort_by { |c| c.to_s.split('::').first }.uniq
   end
 
   def self.announce

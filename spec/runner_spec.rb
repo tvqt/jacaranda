@@ -171,7 +171,17 @@ describe 'Jacaranda' do
 
   describe '#run' do
     let(:count) { 20 }
-    let(:names) { Array.new(count) { Faker::Name.first_name }.sort.uniq }
+    let(:names) do
+      sample_size = count * 2.5
+      word_size   = 5
+      sample = Array.new(sample_size) { Faker::Name.unique.first_name }
+      sample.reject do |w|
+        # skip non-word characters so we don't attempt to turn names like D'Angelo into objects
+        # skip name <= 5 chars so there's an extremely low chance of partial matches
+        # skip words that partial match other words
+        w =~ /\W/ || w.size <= word_size || sample.grep(/#{w}/).size > 1
+      end.sort[0..count - 1]
+    end
     let(:runners) do
       names.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
     end
@@ -219,8 +229,8 @@ describe 'Jacaranda' do
           args = ['--runners', names.join(',')]
           Jacaranda.run(args)
 
-          all_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
-          expect(all_names).to eq(names)
+          requested_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
+          expect(requested_names).to eq(names)
 
           expect(a_request(:post, url)).to have_been_made.at_least_times(count)
         end
@@ -232,6 +242,8 @@ describe 'Jacaranda' do
       Jacaranda.parse([])
       # Undefine all the runners we just created
       names.each { |name| Object.send(:remove_const, name) }
+      # Reset webmock after every test
+      WebMock.reset!
     end
   end
 end
