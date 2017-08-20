@@ -178,33 +178,33 @@ describe 'Jacaranda' do
 
     before(:each) { runners }
 
-    context 'filters' do
-      it 'nothing by default' do
+    context 'when filtering' do
+      it 'returns everything by default' do
         Jacaranda.parse([])
         expect(Jacaranda.runners.size).to be >= count
       end
 
-      it 'to a single runner', :aggregate_failures do
+      it 'can filter to a single runner', :aggregate_failures do
         args = %w[--runners] << runners.first.to_s
         Jacaranda.parse(args)
         expect(Jacaranda.runners.size).to be 1
         expect(Jacaranda.runners).to eq([runners.first])
       end
 
-      it 'to multiple runners', :aggregate_failures do
+      it 'can filter to multiple runners', :aggregate_failures do
         args = %w[--runners] << runners[0..1].join(',')
         Jacaranda.parse(args)
         expect(Jacaranda.runners.size).to be 2
         expect(Jacaranda.runners).to eq(runners[0..1])
       end
 
-      it 'runners sorted alphabetically' do
+      it 'sorts runners alphabetically' do
         expect(Jacaranda.runners.size).to be >= count
         expect(Jacaranda.runners).to eq(Jacaranda.runners.sort_by(&:to_s))
       end
     end
 
-    context 'executes' do
+    context 'when executing' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
 
