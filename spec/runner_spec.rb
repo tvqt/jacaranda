@@ -197,14 +197,14 @@ describe 'Jacaranda' do
       it 'can filter to a single runner', :aggregate_failures do
         args = %w[--runners] << runners.first.to_s
         Jacaranda.parse(args)
-        expect(Jacaranda.runners.size).to be 1
+        expect(Jacaranda.runners.size).to eq(1)
         expect(Jacaranda.runners).to eq([runners.first])
       end
 
       it 'can filter to multiple runners', :aggregate_failures do
         args = %w[--runners] << runners[0..1].join(',')
         Jacaranda.parse(args)
-        expect(Jacaranda.runners.size).to be 2
+        expect(Jacaranda.runners.size).to eq(2)
         expect(Jacaranda.runners).to eq(runners[0..1])
       end
 
