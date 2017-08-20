@@ -76,7 +76,7 @@ describe 'Jacaranda' do
     end
 
     describe '#posts' do
-      let(:names) { Array.new(3) { Faker::Name.first_name } }
+      let(:names) { Array.new(3) { Faker::Name.unique.first_name } }
       let(:runners) do
         sorted = names.sort_by { |c| c.to_s.split('::').last }
         sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
