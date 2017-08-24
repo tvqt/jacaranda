@@ -111,6 +111,8 @@ Then run the scraper:
 MORPH_LIVE_MODE=false bundle exec ruby scraper.rb --runners MyNewRunner
 ```
 
+*Note: The `--runners` option is used only in development. Morph will run the scraper with no arguments.*
+
 You'll see output something like this:
 
 ```
