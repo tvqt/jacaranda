@@ -95,7 +95,7 @@ describe 'Jacaranda' do
       after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
     end
 
-    describe '#run' do
+    describe '.run' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
 
@@ -165,7 +165,7 @@ describe 'Jacaranda' do
     end
   end
 
-  describe '#run' do
+  describe '.runners' do
     let(:count) { 20 }
     let(:names) do
       sample_size = count * 2.5
@@ -210,7 +210,7 @@ describe 'Jacaranda' do
       end
     end
 
-    context 'when executing' do
+    context '.run' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
 
