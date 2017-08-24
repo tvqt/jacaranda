@@ -72,23 +72,16 @@ describe 'Jacaranda' do
     end
 
     describe '#posts' do
-      let(:names) { Array.new(3) { Faker::Name.unique.first_name } }
-      let(:runners) do
-        sorted = names.sort_by { |c| c.to_s.split('::').last }
-        sorted.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
-      end
-      let(:count) { 10 }
-
       it 'only returns posts for the runner type', :aggregate_failures do
-        runners.each do |runner|
-          (1..count).each do |n|
+        mock_runners.each do |runner|
+          (1..mock_runner_count).each do |n|
             text = Faker::RickAndMorty.quote
             time_travel_to(n.days.ago) { runner.record_successful_post(text) }
           end
         end
 
-        runners.each do |runner|
-          expect(runner.posts.size).to eq(count)
+        mock_runners.each do |runner|
+          expect(runner.posts.size).to eq(mock_runner_count)
         end
       end
 
@@ -166,46 +159,28 @@ describe 'Jacaranda' do
   end
 
   describe '.runners' do
-    let(:count) { 20 }
-    let(:names) do
-      sample_size = count * 2.5
-      word_size   = 5
-      sample = Array.new(sample_size) { Faker::Name.unique.first_name }
-      sample.reject do |w|
-        # skip non-word characters so we don't attempt to turn names like D'Angelo into objects
-        # skip name <= 5 chars so there's an extremely low chance of partial matches
-        # skip words that partial match other words
-        w =~ /\W/ || w.size <= word_size || sample.grep(/#{w}/).size > 1
-      end.sort[0..count - 1]
-    end
-    let(:runners) do
-      names.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
-    end
-
-    before(:each) { runners }
-
     context 'when filtering' do
       it 'returns everything by default' do
         Jacaranda.parse([])
-        expect(Jacaranda.runners.size).to be >= count
+        expect(Jacaranda.runners.size).to be >= mock_runner_count
       end
 
       it 'can filter to a single runner', :aggregate_failures do
-        args = %w[--runners] << runners.first.to_s
+        args = %w[--runners] << mock_runners.first.to_s
         Jacaranda.parse(args)
         expect(Jacaranda.runners.size).to eq(1)
-        expect(Jacaranda.runners).to eq([runners.first])
+        expect(Jacaranda.runners).to eq([mock_runners.first])
       end
 
       it 'can filter to multiple runners', :aggregate_failures do
-        args = %w[--runners] << runners[0..1].join(',')
+        args = %w[--runners] << mock_runners[0..1].join(',')
         Jacaranda.parse(args)
         expect(Jacaranda.runners.size).to eq(2)
-        expect(Jacaranda.runners).to eq(runners[0..1])
+        expect(Jacaranda.runners).to eq(mock_runners[0..1])
       end
 
       it 'sorts runners alphabetically' do
-        expect(Jacaranda.runners.size).to be >= count
+        expect(Jacaranda.runners.size).to be >= mock_runner_count
         expect(Jacaranda.runners).to eq(Jacaranda.runners.sort_by(&:to_s))
       end
     end
@@ -222,14 +197,14 @@ describe 'Jacaranda' do
       it 'executes the runners in alphabetical order' do
         vcr_options = { match_requests_on: [:host], allow_playback_repeats: true }
         VCR.use_cassette('post_to_slack_webhook', vcr_options) do
-          args = ['--runners', names.join(',')]
+          args = ['--runners', mock_runner_names.join(',')]
           Jacaranda.run(args)
 
           requested_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
-          requested_names &= names # because sometimes there are partial matches
-          expect(requested_names).to eq(names.sort)
+          requested_names &= mock_runner_names # because sometimes there are partial matches
+          expect(requested_names).to eq(mock_runner_names.sort)
 
-          expect(a_request(:post, url)).to have_been_made.at_least_times(count)
+          expect(a_request(:post, url)).to have_been_made.at_least_times(mock_runner_count)
         end
       end
 
@@ -237,15 +212,6 @@ describe 'Jacaranda' do
         args = ['--list-runners']
         expect { Jacaranda.run(args) }.to raise_error(SystemExit)
       end
-    end
-
-    after(:each) do
-      # Reset the whitelist
-      Jacaranda.parse([])
-      # Undefine all the runners we just created
-      names.each { |name| Object.send(:remove_const, name) }
-      # Reset webmock after every test
-      WebMock.reset!
     end
   end
 end
