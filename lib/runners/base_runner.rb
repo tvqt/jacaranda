@@ -34,8 +34,7 @@ module Jacaranda
       end
 
       def posts
-        query = "* from data where runner = '#{self}'"
-        posts = ScraperWiki.select(query)
+        posts = ScraperWiki.select("* from data where runner = '#{self}'")
         normalise_dates(posts)
       rescue
         []
