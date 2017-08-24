@@ -36,12 +36,16 @@ module Jacaranda
       def posts
         query = "* from data where runner = '#{self}'"
         posts = ScraperWiki.select(query)
+        normalise_dates(posts)
+      rescue
+        []
+      end
+
+      def normalise_dates(posts)
         posts.map do |post|
           post['date_posted'] = Date.parse(post['date_posted'])
           post
         end
-      rescue
-        []
       end
 
       def posted_in_last_fortnight?
