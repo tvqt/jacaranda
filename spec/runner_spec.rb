@@ -19,17 +19,13 @@ describe 'Jacaranda' do
       context 'when all environment variables are set' do
         before(:each) { envvars.each { |var| set_environment_variable(var, Faker::Name.first_name) } }
 
-        it 'does not exit' do
-          is_expected.to_not raise_error
-        end
+        it { is_expected.to_not raise_error }
       end
 
       context 'when any environment variables are not set' do
         before(:each) { envvars.each { |var| unset_environment_variable(var) } }
 
-        it 'exits' do
-          is_expected.to raise_error(SystemExit)
-        end
+        it { is_expected.to raise_error(SystemExit) }
       end
 
       after(:each) { restore_env }
