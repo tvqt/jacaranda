@@ -88,12 +88,13 @@ Jacaranda has a very simple model for adding new runners.
 
 Runners pull information from (sometimes multiple) sources, and posts a message into Slack.
 
-To add a new runner, open up `scraper.rb` and define the following class:
+To add a new runner, create a file in `lib/runners/` and define the following class:
 
 ``` ruby
-module Jacaranda
+# lib/runners/my_service.rb
+module MyService
   # A new runner for my new service
-  class MyNewRunner < Runner
+  class Runner < Jacaranda::BaseRunner
     class << self
       def build
         [
@@ -108,7 +109,7 @@ end
 Then run the scraper:
 
 ``` bash
-MORPH_LIVE_MODE=false bundle exec ruby scraper.rb --runners MyNewRunner
+MORPH_LIVE_MODE=false bundle exec ruby scraper.rb --runners MyService
 ```
 
 *Note: The `--runners` option is used only in development. Morph will run the scraper with no arguments.*
@@ -118,11 +119,11 @@ You'll see output something like this:
 ```
 These are the runners we will execute:
 
-MyNewRunner
+MyService
 
-[MyNewRunner] We have not posted an update during this fortnight.
-[MyNewRunner] Not posting to Slack.
-[MyNewRunner] Not recording the message in the database.
+[MyService] We have not posted an update during this fortnight.
+[MyService] Not posting to Slack.
+[MyService] Not recording the message in the database.
 
 > My text here.
 ```
@@ -132,13 +133,14 @@ That's it.
 While displaying some static text is a nice start, you'll want to call out to your app to pull information in:
 
 ``` ruby
-module Jacaranda
+# lib/runners/my_service.rb
+module MyService
   # A new runner for my new service
-  class MyNewRunner < Runner
+  class Runner < Jacaranda::BaseRunner
     class << self
       def build
         [
-          MyApp.status_text(period: last_fortnight),
+          MyService::Website.status_text(period: last_fortnight),
         ]
       end
     end
@@ -152,29 +154,31 @@ We're using a built-in helper method called `last_fortnight` to give us a date r
 last_fortnight # => [ Mon, 31 Jul 2017, Tue, 01 Aug 2017, ... ]
 ```
 
-We pass this as the `period` parameter to the `status_text` method on the `MyApp` class.
+We pass this as the `period` parameter to the `status_text` method on the `Website` class.
 
 Both the `MyApp` class and `status_text` method don't exist yet. Let's add them:
 
 ``` ruby
-# lib/myapp.rb
+# lib/runners/my_service.rb
 
 # MyApp stats from MyApp
-class MyApp
-  class << self
-    def status_text(period:)
-      [
-        ':tada:',
-        count('requests:new', period: period),
-        'new requests were made through My App in the last fortnight.'
-      ].join(' ')
-    end
+module MyService
+  class Website
+    class << self
+      def status_text(period:)
+        [
+          ':tada:',
+          count('requests:new', period: period),
+          'new requests were made through My Service in the last fortnight.'
+        ].join(' ')
+      end
 
-    def count(query, period)
-      start  = period.first
-      finish = period.last
+      def count(query, period)
+        start  = period.first
+        finish = period.last
 
-      # Make a call out to your service here ...
+        # Make a call out to your service here ...
+      end
     end
   end
 end
@@ -182,7 +186,7 @@ end
 
 The `status_text` method is very simple – it accepts a time period it needs to produce text for, and returns a string of text.
 
-Typically there is a `count` method used to get hit some endpoint or scrape some pages, and generate aggregate statistics. The exact implementation is up to you! Check out the `PlanningAlerts` and `RightToKnow` classes to see some more complex use cases.
+Typically there is a `count` method used to get hit some endpoint or scrape some pages, and generate aggregate statistics. The exact implementation is up to you! Check out the `PlanningAlerts` and `RightToKnow` runners to see some more complex use cases.
 
 ## Image credit
 
