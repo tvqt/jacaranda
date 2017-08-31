@@ -82,7 +82,7 @@ To get started [see the documentation](https://morph.io/documentation)
 
 ## Contributing
 
-## Adding new runners to Jacaranda
+### Adding new runners to Jacaranda
 
 Jacaranda has a very simple model for adding new runners.
 
