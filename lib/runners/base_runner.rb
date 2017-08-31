@@ -120,7 +120,7 @@ module Jacaranda
       end
 
       def name
-        to_s.split('::').last
+        to_s.split('::').first
       end
     end
   end
