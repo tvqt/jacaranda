@@ -120,6 +120,8 @@ MORPH_LIVE_MODE=false bundle exec ruby scraper.rb --runners MyService
 
 *Note: The `--runners` option is used only in development. Morph will run the scraper with no arguments.*
 
+*Note: You can use the `--list-runners` option to get a list of all runners Jacaranda knows about.
+
 You'll see output something like this:
 
 ```
