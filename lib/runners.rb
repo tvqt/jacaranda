@@ -19,7 +19,7 @@ module Jacaranda
   end
 
   # rubocop:disable Metrics/MethodLength
-  def self.parse(args)
+  def self.parse(args=[])
     @whitelist = []
     opt_parser = OptionParser.new do |opts|
       opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
@@ -34,6 +34,7 @@ module Jacaranda
         puts opts
         exit
       end
+      @whitelist = ENV['MORPH_RUNNERS']&.split(',')
     end
     opt_parser.parse!(args)
   end

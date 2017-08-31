@@ -159,10 +159,11 @@ describe 'Jacaranda' do
   end
 
   describe '.runners' do
-    context 'when filtering' do
+    context 'when filtering with cli option' do
       it 'returns everything by default' do
         Jacaranda.parse([])
-        expect(Jacaranda.runners.size).to be >= mock_runner_count
+        runners = Jacaranda.runners & mock_runners
+        expect(runners.size).to eq(mock_runner_count)
       end
 
       it 'can filter to a single runner', :aggregate_failures do
@@ -180,8 +181,57 @@ describe 'Jacaranda' do
       end
 
       it 'sorts runners alphabetically' do
-        expect(Jacaranda.runners.size).to be >= mock_runner_count
-        expect(Jacaranda.runners).to eq(Jacaranda.runners.sort_by(&:to_s))
+        runners = Jacaranda.runners & mock_runners
+        expect(runners.size).to eq(mock_runner_count)
+        expect(runners).to eq(runners.sort_by(&:to_s))
+      end
+    end
+
+    context 'when filtering' do
+      it 'returns everything by default' do
+        Jacaranda.parse
+        runners = Jacaranda.runners & mock_runners
+        expect(runners.size).to eq(mock_runner_count)
+      end
+
+      it 'sorts runners alphabetically' do
+        runners = Jacaranda.runners & mock_runners
+        expect(runners.size).to eq(mock_runner_count)
+        expect(runners).to eq(runners.sort_by(&:to_s))
+      end
+
+      context 'with cli options' do
+        it 'can filter to a single runner', :aggregate_failures do
+          args = %w[--runners] << mock_runners.first.to_s
+          Jacaranda.parse(args)
+          expect(Jacaranda.runners.size).to eq(1)
+          expect(Jacaranda.runners).to eq([mock_runners.first])
+        end
+
+        it 'can filter to multiple runners', :aggregate_failures do
+          args = %w[--runners] << mock_runners[0..1].join(',')
+          Jacaranda.parse(args)
+          expect(Jacaranda.runners.size).to eq(2)
+          expect(Jacaranda.runners).to eq(mock_runners[0..1])
+        end
+      end
+
+      context 'with environment variables' do
+        it 'can filter to a single runner', :aggregate_failures do
+          set_environment_variable('MORPH_RUNNERS', mock_runners.first.to_s)
+          Jacaranda.parse
+          expect(Jacaranda.runners.size).to eq(1)
+          expect(Jacaranda.runners).to eq([mock_runners.first])
+        end
+
+        it 'can filter to multiple runners', :aggregate_failures do
+          set_environment_variable('MORPH_RUNNERS', mock_runners[0..1].join(','))
+          Jacaranda.parse
+          expect(Jacaranda.runners.size).to eq(2)
+          expect(Jacaranda.runners).to eq(mock_runners[0..1])
+        end
+
+        after(:each) { restore_env }
       end
     end
 
