@@ -80,6 +80,12 @@ You can also run this as a scraper on [Morph](https://morph.io).
 
 To get started [see the documentation](https://morph.io/documentation)
 
+You can optionally set `MORPH_RUNNERS` to choose what runners are executed. Go to the settings page of the scraper, and set the value to be a comma separated list of runners:
+
+```
+RightToKnow,PlanningAlerts
+```
+
 ## Contributing
 
 ### Adding new runners to Jacaranda
