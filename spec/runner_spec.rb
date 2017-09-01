@@ -159,35 +159,7 @@ describe 'Jacaranda' do
   end
 
   describe '.runners' do
-    context 'when filtering with cli option' do
-      it 'returns everything by default' do
-        Jacaranda.parse([])
-        runners = Jacaranda.runners & mock_runners
-        expect(runners.size).to eq(mock_runner_count)
-      end
-
-      it 'can filter to a single runner', :aggregate_failures do
-        args = %w[--runners] << mock_runners.first.to_s
-        Jacaranda.parse(args)
-        expect(Jacaranda.runners.size).to eq(1)
-        expect(Jacaranda.runners).to eq([mock_runners.first])
-      end
-
-      it 'can filter to multiple runners', :aggregate_failures do
-        args = %w[--runners] << mock_runners[0..1].join(',')
-        Jacaranda.parse(args)
-        expect(Jacaranda.runners.size).to eq(2)
-        expect(Jacaranda.runners).to eq(mock_runners[0..1])
-      end
-
-      it 'sorts runners alphabetically' do
-        runners = Jacaranda.runners & mock_runners
-        expect(runners.size).to eq(mock_runner_count)
-        expect(runners).to eq(runners.sort_by(&:to_s))
-      end
-    end
-
-    context 'when filtering' do
+    context 'when filtered' do
       it 'returns everything by default' do
         Jacaranda.parse
         runners = Jacaranda.runners & mock_runners
