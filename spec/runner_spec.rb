@@ -158,8 +158,8 @@ describe 'Jacaranda' do
     end
   end
 
-  describe '.runners' do
-    context 'when filtered' do
+  describe '.parse' do
+    context 'when filtering' do
       it 'returns everything by default' do
         Jacaranda.parse
         runners = Jacaranda.runners & mock_runners
@@ -206,34 +206,34 @@ describe 'Jacaranda' do
         after(:each) { restore_env }
       end
     end
+  end
 
-    context '.run' do
-      let(:url) { Faker::Internet.url('hooks.slack.com') }
-      let(:text) { Faker::Lorem.paragraph(2) }
+  describe '.run' do
+    let(:url) { Faker::Internet.url('hooks.slack.com') }
+    let(:text) { Faker::Lorem.paragraph(2) }
 
-      before(:each) do
-        set_environment_variable('MORPH_LIVE_MODE', 'true')
-        set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+    before(:each) do
+      set_environment_variable('MORPH_LIVE_MODE', 'true')
+      set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+    end
+
+    it 'executes the runners in alphabetical order' do
+      vcr_options = { match_requests_on: [:host], allow_playback_repeats: true }
+      VCR.use_cassette('post_to_slack_webhook', vcr_options) do
+        args = ['--runners', mock_runner_names.join(',')]
+        Jacaranda.run(args)
+
+        requested_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
+        requested_names &= mock_runner_names # because sometimes there are partial matches
+        expect(requested_names).to eq(mock_runner_names.sort)
+
+        expect(a_request(:post, url)).to have_been_made.at_least_times(mock_runner_count)
       end
+    end
 
-      it 'executes the runners in alphabetical order' do
-        vcr_options = { match_requests_on: [:host], allow_playback_repeats: true }
-        VCR.use_cassette('post_to_slack_webhook', vcr_options) do
-          args = ['--runners', mock_runner_names.join(',')]
-          Jacaranda.run(args)
-
-          requested_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
-          requested_names &= mock_runner_names # because sometimes there are partial matches
-          expect(requested_names).to eq(mock_runner_names.sort)
-
-          expect(a_request(:post, url)).to have_been_made.at_least_times(mock_runner_count)
-        end
-      end
-
-      it 'exits after listing runners' do
-        args = ['--list-runners']
-        expect { Jacaranda.run(args) }.to raise_error(SystemExit)
-      end
+    it 'exits after listing runners' do
+      args = ['--list-runners']
+      expect { Jacaranda.run(args) }.to raise_error(SystemExit)
     end
   end
 end
