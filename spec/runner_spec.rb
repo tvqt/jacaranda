@@ -73,15 +73,15 @@ describe 'Jacaranda' do
 
     describe '#posts' do
       it 'only returns posts for the runner type', :aggregate_failures do
-        mock_runners.each do |runner|
-          (1..mock_runner_count).each do |n|
+        Jacaranda.runners.each do |runner|
+          (1..10).each do |n|
             text = Faker::RickAndMorty.quote
             time_travel_to(n.days.ago) { runner.record_successful_post(text) }
           end
         end
 
-        mock_runners.each do |runner|
-          expect(runner.posts.size).to eq(mock_runner_count)
+        Jacaranda.runners.each do |runner|
+          expect(runner.posts.size).to eq(10)
         end
       end
 
@@ -168,33 +168,39 @@ describe 'Jacaranda' do
 
       context 'with cli options' do
         it 'can filter to a single runner', :aggregate_failures do
-          args = %w[--runners] << mock_runners.first.to_s
+          runner = Jacaranda.runners.first
+          args = %w[--runners] << runner.to_s.split('::').first
           Jacaranda.parse(args)
           expect(Jacaranda.runners.size).to eq(1)
-          expect(Jacaranda.runners).to eq([mock_runners.first])
+          expect(Jacaranda.runners).to eq([runner])
         end
 
         it 'can filter to multiple runners', :aggregate_failures do
-          args = %w[--runners] << mock_runners[0..1].join(',')
+          runners = Jacaranda.runners[0..1]
+          args = %w[--runners] << runners.map(&:to_s).map {|r| r.split('::').first }.join(',')
           Jacaranda.parse(args)
           expect(Jacaranda.runners.size).to eq(2)
-          expect(Jacaranda.runners).to eq(mock_runners[0..1])
+          expect(Jacaranda.runners).to eq(Jacaranda.runners[0..1])
         end
       end
 
       context 'with environment variables' do
         it 'can filter to a single runner', :aggregate_failures do
-          set_environment_variable('MORPH_RUNNERS', mock_runners.first.to_s)
+          runner = Jacaranda.runners.first
+          value = runner.to_s.split('::').first
+          set_environment_variable('MORPH_RUNNERS', value)
           Jacaranda.parse
           expect(Jacaranda.runners.size).to eq(1)
-          expect(Jacaranda.runners).to eq([mock_runners.first])
+          expect(Jacaranda.runners).to eq([runner])
         end
 
         it 'can filter to multiple runners', :aggregate_failures do
-          set_environment_variable('MORPH_RUNNERS', mock_runners[0..1].join(','))
+          runners = Jacaranda.runners[0..1]
+          value = runners.map(&:to_s).map {|r| r.split('::').first }.join(',')
+          set_environment_variable('MORPH_RUNNERS', value)
           Jacaranda.parse
           expect(Jacaranda.runners.size).to eq(2)
-          expect(Jacaranda.runners).to eq(mock_runners[0..1])
+          expect(Jacaranda.runners).to eq(runners)
         end
 
         after(:each) { restore_env }

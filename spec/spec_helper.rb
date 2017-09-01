@@ -14,29 +14,9 @@ VCR.configure do |c|
 end
 
 RSpec.shared_context 'mock runners' do
-  let(:mock_runner_count) { 20 }
-  let(:mock_runner_names) do
-    sample_size = mock_runner_count * 2.5
-    word_size   = 5
-    sample = Array.new(sample_size) { Faker::Name.unique.first_name }
-    sample.reject do |w|
-      # skip non-word characters so we don't attempt to turn names like D'Angelo into objects
-      # skip name <= 5 chars so there's an extremely low chance of partial matches
-      # skip words that partial match other words
-      w =~ /\W/ || w.size <= word_size || sample.grep(/#{w}/).size > 1
-    end.sort[0..mock_runner_count - 1]
-  end
-  let(:mock_runners) do
-    mock_runner_names.map { |name| Object.const_set(name, Class.new(Jacaranda::BaseRunner)) }
-  end
-
-  before(:each) { mock_runners }
-
   after(:each) do
     # Reset the whitelist
     Jacaranda.parse([])
-    # Undefine all the runners we just created
-    mock_runner_names.each { |name| Object.send(:remove_const, name) }
     # Reset webmock after every test
     WebMock.reset!
   end
