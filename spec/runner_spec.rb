@@ -160,12 +160,6 @@ describe 'Jacaranda' do
 
   describe '.parse' do
     context 'when filtering' do
-      it 'returns everything by default' do
-        Jacaranda.parse
-        runners = Jacaranda.runners & mock_runners
-        expect(runners.size).to eq(mock_runner_count)
-      end
-
       it 'sorts runners alphabetically' do
         runners = Jacaranda.runners & mock_runners
         expect(runners.size).to eq(mock_runner_count)
