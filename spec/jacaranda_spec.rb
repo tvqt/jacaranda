@@ -6,6 +6,10 @@ def all_requests
   WebMock::RequestRegistry.instance.requested_signatures.hash.keys
 end
 
+def all_request_bodies
+  all_requests.map { |r| JSON.parse(r.body) }
+end
+
 describe 'Jacaranda' do
   describe '.parse' do
     context 'when filtering' do
@@ -60,10 +64,17 @@ describe 'Jacaranda' do
   describe '.run' do
     let(:url) { Faker::Internet.url('hooks.slack.com') }
     let(:text) { Faker::Lorem.paragraph(2) }
+    let(:mock_runner_names) { %w(Alpha Bravo Charlie Delta Echo Foxtrot).shuffle }
+    let(:mock_runners) {
+      mock_runner_names.map do |name|
+        Object.const_set(name, Class.new(Jacaranda::BaseRunner))
+      end
+    }
 
     before(:each) do
       set_environment_variable('MORPH_LIVE_MODE', 'true')
       set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+      mock_runners
     end
 
     it 'executes the runners in alphabetical order' do
@@ -73,16 +84,19 @@ describe 'Jacaranda' do
         Jacaranda.run(args)
 
         requested_names = all_request_bodies.map { |b| b['text'][/inherit (\w+) and/, 1] }
-        requested_names &= mock_runner_names # because sometimes there are partial matches
         expect(requested_names).to eq(mock_runner_names.sort)
 
-        expect(a_request(:post, url)).to have_been_made.at_least_times(mock_runner_count)
+        expect(a_request(:post, url)).to have_been_made.times(mock_runner_names.size)
       end
     end
 
     it 'exits after listing runners' do
       args = ['--list-runners']
       expect { Jacaranda.run(args) }.to raise_error(SystemExit)
+    end
+
+    after(:each) do
+      mock_runner_names.each { |name| Object.send(:remove_const, name) }
     end
   end
 end
