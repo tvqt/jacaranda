@@ -38,22 +38,27 @@ describe 'Jacaranda' do
       end
 
       context 'with environment variables' do
+        let(:single_runner) { Jacaranda.runners.first }
+        let(:multiple_runners) { Jacaranda.runners[0..1] }
+        let(:single_runner_name) do
+          single_runner.to_s.split('::').first
+        end
+        let(:multiple_runner_names) do
+          multiple_runners.map(&:to_s).map { |r| r.split('::').first }.join(',')
+        end
+
         it 'can filter to a single runner', :aggregate_failures do
-          runner = Jacaranda.runners.first
-          value = runner.to_s.split('::').first
-          set_environment_variable('MORPH_RUNNERS', value)
+          set_environment_variable('MORPH_RUNNERS', single_runner_name)
           Jacaranda.parse
           expect(Jacaranda.runners.size).to eq(1)
-          expect(Jacaranda.runners).to eq([runner])
+          expect(Jacaranda.runners).to eq([single_runner])
         end
 
         it 'can filter to multiple runners', :aggregate_failures do
-          runners = Jacaranda.runners[0..1]
-          value = runners.map(&:to_s).map { |r| r.split('::').first }.join(',')
-          set_environment_variable('MORPH_RUNNERS', value)
+          set_environment_variable('MORPH_RUNNERS', multiple_runner_names)
           Jacaranda.parse
           expect(Jacaranda.runners.size).to eq(2)
-          expect(Jacaranda.runners).to eq(runners)
+          expect(Jacaranda.runners).to eq(multiple_runners)
         end
 
         after(:each) { restore_env }
