@@ -30,7 +30,7 @@ describe 'Jacaranda' do
 
         it 'can filter to multiple runners', :aggregate_failures do
           runners = Jacaranda.runners[0..1]
-          args = %w[--runners] << runners.map(&:to_s).map {|r| r.split('::').first }.join(',')
+          args = %w[--runners] << runners.map(&:to_s).map { |r| r.split('::').first }.join(',')
           Jacaranda.parse(args)
           expect(Jacaranda.runners.size).to eq(2)
           expect(Jacaranda.runners).to eq(Jacaranda.runners[0..1])
@@ -49,7 +49,7 @@ describe 'Jacaranda' do
 
         it 'can filter to multiple runners', :aggregate_failures do
           runners = Jacaranda.runners[0..1]
-          value = runners.map(&:to_s).map {|r| r.split('::').first }.join(',')
+          value = runners.map(&:to_s).map { |r| r.split('::').first }.join(',')
           set_environment_variable('MORPH_RUNNERS', value)
           Jacaranda.parse
           expect(Jacaranda.runners.size).to eq(2)
@@ -64,12 +64,12 @@ describe 'Jacaranda' do
   describe '.run' do
     let(:url) { Faker::Internet.url('hooks.slack.com') }
     let(:text) { Faker::Lorem.paragraph(2) }
-    let(:mock_runner_names) { %w(Alpha Bravo Charlie Delta Echo Foxtrot).shuffle }
-    let(:mock_runners) {
+    let(:mock_runner_names) { %w[Alpha Bravo Charlie Delta Echo Foxtrot].shuffle }
+    let(:mock_runners) do
       mock_runner_names.map do |name|
         Object.const_set(name, Class.new(Jacaranda::BaseRunner))
       end
-    }
+    end
 
     before(:each) do
       set_environment_variable('MORPH_LIVE_MODE', 'true')
