@@ -1,6 +1,6 @@
 # Jacaranda
 
-*A watchful tree and Slack messenger to keep you informed of the use of PlanningAlerts.*
+*A watchful tree and extensible Slack messenger to keep you informed of the use of PlanningAlerts and Right To Know.*
 
 Working on PlanningAlerts over the last year we’ve noticed that:
 
@@ -14,6 +14,8 @@ Jacaranda collects information about people using PlanningAlerts and the work we
 ![Image of slack message from Jacaranda](screenshot.jpg)
 
 This is a very basic start. We’ve interested to see how getting these messages impacts us and what we do with the information.
+
+## PlanningAlerts message
 
 Currently Jacaranda tells you about:
 
@@ -29,6 +31,14 @@ While the number of users isn’t a great measure of PlanningAlerts’ impact, i
 ### Caveats
 
 The time frames that this claims to show subscribers for aren’t accurate because they're displayed as it they were recorded in local time, but they're actually counted in UTC.
+
+## Right To Know message
+
+Currently Jacaranda tells you about:
+
+* The number of new requests in the last fortnight
+* The number of annotations in the last fortnight
+* The number of requests that were successful in the last fortnight
 
 ## Quickstart
 
