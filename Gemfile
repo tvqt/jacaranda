@@ -14,10 +14,13 @@ gem 'scraperwiki', git: 'https://github.com/openaustralia/scraperwiki-ruby.git',
 
 group :development do
   gem 'pry'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
   gem 'rake'
 end
 
 group :test do
+  gem 'delorean'
   gem 'faker'
   gem 'rspec'
   gem 'rubocop'
