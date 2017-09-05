@@ -29,8 +29,13 @@ module Jacaranda
   end
 
   def self.has_been_migrated?
+    query = %[SELECT sql FROM sqlite_master where name = 'data' AND type = 'table']
+    return true if ScraperWiki.sqliteexecute(query).empty?
+
     query = %[SELECT sql FROM sqlite_master where name = 'posts' AND type = 'table']
-    !ScraperWiki.sqliteexecute(query).empty?
+    return true if ScraperWiki.sqliteexecute(query).any?
+
+    return false
   end
 
   # rubocop:disable Metrics/MethodLength
