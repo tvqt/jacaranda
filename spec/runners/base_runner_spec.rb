@@ -77,7 +77,7 @@ describe 'Jacaranda' do
         end
       end
 
-      after(:each) { ScraperWiki.sqliteexecute('DELETE FROM data') }
+      after(:each) { ScraperWiki.sqliteexecute('DELETE FROM posts') }
     end
 
     describe '.run' do
@@ -109,7 +109,7 @@ describe 'Jacaranda' do
 
       after(:each) do
         restore_env
-        ScraperWiki.sqliteexecute('DELETE FROM data')
+        ScraperWiki.sqliteexecute('DELETE FROM posts')
       end
     end
 
