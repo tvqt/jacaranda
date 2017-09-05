@@ -20,22 +20,22 @@ module Jacaranda
   end
 
   def self.upgrade_schema!
-    return if has_been_migrated?
-    data = ScraperWiki.select("* from data")
-    upgraded = data.map {|r| r['runner'] = 'RightToKnow::Runner' unless r['runner'] ; r }
+    return if been_migrated?
+    data = ScraperWiki.select('* from data')
+    upgraded = data.each { |r| r['runner'] = 'RightToKnow::Runner' unless r['runner'] }
     primary_keys = %w[date_posted runner]
     table_name = 'posts'
     ScraperWiki.save_sqlite(primary_keys, upgraded, table_name)
   end
 
-  def self.has_been_migrated?
-    query = %[SELECT sql FROM sqlite_master where name = 'data' AND type = 'table']
+  def self.been_migrated?
+    query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
     return true if ScraperWiki.sqliteexecute(query).empty?
 
-    query = %[SELECT sql FROM sqlite_master where name = 'posts' AND type = 'table']
+    query = %(SELECT sql FROM sqlite_master where name = 'posts' AND type = 'table')
     return true if ScraperWiki.sqliteexecute(query).any?
 
-    return false
+    false
   end
 
   # rubocop:disable Metrics/MethodLength

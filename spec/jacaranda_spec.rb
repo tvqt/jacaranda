@@ -14,9 +14,9 @@ describe 'Jacaranda' do
   describe '.upgrade_schema!' do
     let(:insert_data_statements) do
       [
-        %[INSERT INTO data (date_posted,text,runner) VALUES ('2016-08-29','hello',null)],
-        %[INSERT INTO data (date_posted,text,runner) VALUES ('2016-09-12','world',null)],
-        %[INSERT INTO data (date_posted,text,runner) VALUES ('2017-09-04','foo','RightToKnow::Runner')],
+        %(INSERT INTO data (date_posted,text,runner) VALUES ('2016-08-29','hello',null)),
+        %(INSERT INTO data (date_posted,text,runner) VALUES ('2016-09-12','world',null)),
+        %(INSERT INTO data (date_posted,text,runner) VALUES ('2017-09-04','foo','RightToKnow::Runner'))
       ]
     end
 
@@ -25,7 +25,7 @@ describe 'Jacaranda' do
       insert_data_statements.each { |statement| ScraperWiki.sqliteexecute(statement) }
     end
 
-    context 'when the schema is old' do
+    context 'when the schema has not been upgraded' do
       let(:create_table_statements) do
         [
           %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))]
@@ -33,26 +33,26 @@ describe 'Jacaranda' do
       end
 
       it 'applies the upgrade' do
-        expect(Jacaranda.has_been_migrated?).to be false
+        expect(Jacaranda.been_migrated?).to be false
         Jacaranda.upgrade_schema!
-        expect(Jacaranda.has_been_migrated?).to be true
+        expect(Jacaranda.been_migrated?).to be true
 
-        query = %[SELECT sql FROM sqlite_master WHERE name = 'posts' AND type = 'table']
+        query = %(SELECT sql FROM sqlite_master WHERE name = 'posts' AND type = 'table')
         expect(ScraperWiki.sqliteexecute(query).any?).to be true
 
-        query = %[SELECT count(*) AS count FROM posts]
+        query = %(SELECT count(*) AS count FROM posts)
         expect(ScraperWiki.sqliteexecute(query).first['count']).to eq(insert_data_statements.size)
 
-        query = %[SELECT * FROM posts WHERE runner IS NULL]
+        query = %(SELECT * FROM posts WHERE runner IS NULL)
         expect(ScraperWiki.sqliteexecute(query).empty?).to be true
       end
     end
 
-    context 'when the schema is new' do
+    context 'when the schema has been upgraded' do
       let(:create_table_statements) do
         [
           %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))],
-          %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))],
+          %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))]
         ]
       end
 
