@@ -13,9 +13,24 @@ Pathname.glob(runners).map(&:to_s).each { |runner| require(runner) }
 # Wrapper for all runners
 module Jacaranda
   def self.run(args)
+    upgrade_schema!
     parse(args)
     announce
     runners.each(&:run)
+  end
+
+  def self.upgrade_schema!
+    return if has_been_migrated?
+    data = ScraperWiki.select("* from data")
+    upgraded = data.map {|r| r['runner'] = 'RightToKnow::Runner' unless r['runner'] ; r }
+    primary_keys = %w[date_posted runner]
+    table_name = 'posts'
+    ScraperWiki.save_sqlite(primary_keys, upgraded, table_name)
+  end
+
+  def self.has_been_migrated?
+    query = %[SELECT sql FROM sqlite_master where name = 'posts' AND type = 'table']
+    !ScraperWiki.sqliteexecute(query).empty?
   end
 
   # rubocop:disable Metrics/MethodLength

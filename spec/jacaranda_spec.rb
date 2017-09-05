@@ -11,6 +11,60 @@ def all_request_bodies
 end
 
 describe 'Jacaranda' do
+  describe '.upgrade_schema!' do
+    let(:insert_data_statements) do
+      [
+        %[INSERT INTO data (date_posted,text,runner) VALUES ('2016-08-29','hello',null)],
+        %[INSERT INTO data (date_posted,text,runner) VALUES ('2016-09-12','world',null)],
+        %[INSERT INTO data (date_posted,text,runner) VALUES ('2017-09-04','foo','RightToKnow::Runner')],
+      ]
+    end
+
+    before(:each) do
+      create_table_statements.each { |statement| ScraperWiki.sqliteexecute(statement) }
+      insert_data_statements.each { |statement| ScraperWiki.sqliteexecute(statement) }
+    end
+
+    context 'when the schema is old' do
+      let(:create_table_statements) do
+        [
+          %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))]
+        ]
+      end
+
+      it 'applies the upgrade' do
+        expect(Jacaranda.has_been_migrated?).to be false
+        Jacaranda.upgrade_schema!
+        expect(Jacaranda.has_been_migrated?).to be true
+
+        query = %[SELECT sql FROM sqlite_master WHERE name = 'posts' AND type = 'table']
+        expect(ScraperWiki.sqliteexecute(query).any?).to be true
+
+        query = %[SELECT count(*) AS count FROM posts]
+        expect(ScraperWiki.sqliteexecute(query).first['count']).to eq(insert_data_statements.size)
+
+        query = %[SELECT * FROM posts WHERE runner IS NULL]
+        expect(ScraperWiki.sqliteexecute(query).empty?).to be true
+      end
+    end
+
+    context 'when the schema is new' do
+      let(:create_table_statements) do
+        [
+          %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))],
+          %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))],
+        ]
+      end
+
+      it 'skips the upgrade' do
+        Jacaranda.upgrade_schema!
+
+        query = %[SELECT count(*) AS count FROM posts]
+        expect(ScraperWiki.sqliteexecute(query).first['count']).to eq(0)
+      end
+    end
+  end
+
   describe '.parse' do
     context 'when filtering' do
       it 'sorts runners alphabetically' do
