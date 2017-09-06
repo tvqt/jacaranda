@@ -2,6 +2,6 @@
 
 require 'dotenv'
 Dotenv.load
-require_relative 'lib/runners'
+require_relative 'lib/jacaranda'
 
 Jacaranda.run(ARGV) if $PROGRAM_NAME == __FILE__

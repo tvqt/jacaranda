@@ -34,7 +34,7 @@ module Jacaranda
       end
 
       def posts
-        posts = ScraperWiki.select("* from data where runner = '#{self}'")
+        posts = ScraperWiki.select("* from posts where runner = '#{self}'")
         normalise_dates(posts)
       rescue
         []
@@ -110,7 +110,7 @@ module Jacaranda
           text: message,
           runner: to_s
         }
-        ScraperWiki.save_sqlite(%i[date_posted runner], record)
+        ScraperWiki.save_sqlite(%i[date_posted runner], record, 'posts')
       end
 
       def print(message)
