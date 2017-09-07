@@ -11,12 +11,11 @@ def all_request_bodies
 end
 
 describe 'Jacaranda' do
-  describe '.upgrade_schema!' do
-    let(:insert_data_statements) do
+  describe '.fix_incorrectly_migrated_data!' do
+    let(:create_table_statements) do
       [
-        %(INSERT INTO data (date_posted,text,runner) VALUES ('2016-08-29','hello',null)),
-        %(INSERT INTO data (date_posted,text,runner) VALUES ('2016-09-12','world',null)),
-        %(INSERT INTO data (date_posted,text,runner) VALUES ('2017-09-04','foo','RightToKnow::Runner'))
+        %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))],
+        %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))]
       ]
     end
 
@@ -25,20 +24,23 @@ describe 'Jacaranda' do
       insert_data_statements.each { |statement| ScraperWiki.sqliteexecute(statement) }
     end
 
-    context 'when the schema has not been upgraded' do
-      let(:create_table_statements) do
+    context 'when the data has not been fixed' do
+      # rubocop:disable Metrics/LineLength
+      let(:insert_data_statements) do
         [
-          %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))]
+          %[INSERT INTO "posts" VALUES('2016-08-29','700 people signed up for PlanningAlerts last fortnight :revolving_hearts: That’s 6% down from the fortnight before. You shipped 26 commits in the same period. There are now 36.8 thousand PlanningAlerts subscribers! :star2:','RightToKnow::Runner')],
+          %[INSERT INTO "posts" VALUES('2016-09-12','705 people signed up for PlanningAlerts last fortnight :revolving_hearts: That’s 3% up from the fortnight before. You shipped 1 commits in the same period. There are now 37.4 thousand PlanningAlerts subscribers! :star2:','RightToKnow::Runner')],
+          %[INSERT INTO "posts" VALUES('2016-09-26','746 people signed up for PlanningAlerts last fortnight :revolving_hearts: That’s 6% up from the fortnight before. You shipped 13 commits in the same period. There are now 38 thousand PlanningAlerts subscribers! :star2:','RightToKnow::Runner')],
+          %[INSERT INTO "posts" VALUES('2016-10-10','728 people signed up for PlanningAlerts last fortnight :revolving_hearts: That’s 0% down from the fortnight before. There are now 38.6 thousand PlanningAlerts subscribers! :star2:','RightToKnow::Runner')],
+          %[INSERT INTO "posts" VALUES('2016-10-25','745 people signed up for PlanningAlerts last fortnight :revolving_hearts: That’s 5% up from the fortnight before. There are now 39.3 thousand PlanningAlerts subscribers! :star2:','RightToKnow::Runner')],
+          %[INSERT INTO "posts" VALUES('2017-09-04',':saxophone: 31 new requests were made through Right To Know last fortnight.\n\n:heartbeat: Our contributors helped people with 7 annotations.\n\n:trophy: 3 requests were marked successful!','RightToKnow::Runner')],
+          %[INSERT INTO "posts" VALUES('2017-09-05','711 people signed up for PlanningAlerts last fortnight :revolving_hearts: That’s 13% less than the fortnight before.\n\n232 people left. That’s 5% less than the fortnight before.\n\nYou shipped 100 commits in the same period.\n\nThere are now 53,700 PlanningAlerts subscribers! :star2:','PlanningAlerts::Runner')]
         ]
       end
+      # rubocop:enable Metrics/LineLength
 
-      it 'applies the upgrade' do
-        expect(Jacaranda.been_migrated?).to be false
-        Jacaranda.upgrade_schema!
-        expect(Jacaranda.been_migrated?).to be true
-
-        query = %(SELECT sql FROM sqlite_master WHERE name = 'posts' AND type = 'table')
-        expect(ScraperWiki.sqliteexecute(query).any?).to be true
+      it 'applies the fix' do
+        Jacaranda.fix_incorrectly_migrated_data!
 
         query = %(SELECT count(*) AS count FROM posts)
         expect(ScraperWiki.sqliteexecute(query).first['count']).to eq(insert_data_statements.size)
@@ -48,19 +50,31 @@ describe 'Jacaranda' do
       end
     end
 
-    context 'when the schema has been upgraded' do
-      let(:create_table_statements) do
+    context 'when the data has been fixed' do
+      # rubocop:disable Metrics/LineLength
+      let(:insert_data_statements) do
         [
-          %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))],
-          %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))]
+          %(INSERT INTO posts (date_posted,text,runner) VALUES ('2016-08-29','Right To Know','RightToKnow::Runner')),
+          %(INSERT INTO posts (date_posted,text,runner) VALUES ('2016-09-12','Right To Know','RightToKnow::Runner')),
+          %(INSERT INTO posts (date_posted,text,runner) VALUES ('2017-09-04','PlanningAlerts','PlanningAlerts::Runner')),
+          %(INSERT INTO posts (date_posted,text,runner) VALUES ('2017-09-04','Right To Know','RightToKnow::Runner'))
         ]
       end
+      # rubocop:enable Metrics/LineLength
 
-      it 'skips the upgrade' do
-        Jacaranda.upgrade_schema!
+      it 'skips the fix' do
+        query = %(SELECT * FROM posts)
+        before = ScraperWiki.sqliteexecute(query)
 
-        query = %[SELECT count(*) AS count FROM posts]
-        expect(ScraperWiki.sqliteexecute(query).first['count']).to eq(0)
+        Jacaranda.fix_incorrectly_migrated_data!
+
+        query = %(SELECT count(*) AS count FROM posts)
+        expect(ScraperWiki.sqliteexecute(query).first['count']).to eq(insert_data_statements.size)
+
+        query = %(SELECT * FROM posts)
+        after = ScraperWiki.sqliteexecute(query)
+
+        expect(before).to eq(after)
       end
     end
   end

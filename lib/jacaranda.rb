@@ -13,29 +13,43 @@ Pathname.glob(runners).map(&:to_s).each { |runner| require(runner) }
 # Wrapper for all runners
 module Jacaranda
   def self.run(args)
-    upgrade_schema!
+    fix_incorrectly_migrated_data!
     parse(args)
     announce
     runners.each(&:run)
   end
 
-  def self.upgrade_schema!
-    return if been_migrated?
-    data = ScraperWiki.select('* from data')
-    upgraded = data.each { |r| r['runner'] = 'RightToKnow::Runner' unless r['runner'] }
+  # rubocop:disable Metrics/MethodLength
+  def self.fix_incorrectly_migrated_data!
+    return if no_tables?
+
+    posts = ScraperWiki.select('* FROM posts')
+
+    # Fix the records
+    fixed = posts.each do |r|
+      case r['text']
+      when /Right To Know/
+        r['runner'] = 'RightToKnow::Runner'
+      when /PlanningAlerts/
+        r['runner'] = 'PlanningAlerts::Runner'
+      else
+        raise 'wtf'
+      end
+    end
+
+    # Delete old records
+    ScraperWiki.sqliteexecute('DELETE FROM posts')
+
+    # Save
     primary_keys = %w[date_posted runner]
     table_name = 'posts'
-    ScraperWiki.save_sqlite(primary_keys, upgraded, table_name)
+    ScraperWiki.save_sqlite(primary_keys, fixed, table_name)
   end
+  # rubocop:enable Metrics/MethodLength
 
-  def self.been_migrated?
-    query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
-    return true if ScraperWiki.sqliteexecute(query).empty?
-
+  def self.no_tables?
     query = %(SELECT sql FROM sqlite_master where name = 'posts' AND type = 'table')
-    return true if ScraperWiki.sqliteexecute(query).any?
-
-    false
+    ScraperWiki.sqliteexecute(query).empty?
   end
 
   # rubocop:disable Metrics/MethodLength
