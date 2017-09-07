@@ -11,6 +11,42 @@ def all_request_bodies
 end
 
 describe 'Jacaranda' do
+  describe '.remove_old_tables!' do
+    before(:each) do
+      create_table_statements.each { |statement| ScraperWiki.sqliteexecute(statement) }
+    end
+
+    context 'when the old tables are present' do
+      let(:create_table_statements) do
+        [
+          %[CREATE TABLE data (date_posted,text,runner,UNIQUE (date_posted))],
+          %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))]
+        ]
+      end
+
+      it 'removes them' do
+        Jacaranda.remove_old_tables!
+        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
+        expect(ScraperWiki.sqliteexecute(query).empty?).to be true
+      end
+    end
+
+    context 'when the old tables are not present' do
+      let(:create_table_statements) do
+        [
+          %[CREATE TABLE posts (date_posted,text,runner,UNIQUE (date_posted,runner))]
+        ]
+      end
+
+      it 'does nothing' do
+        Jacaranda.remove_old_tables!
+        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
+        expect { ScraperWiki.sqliteexecute(query) }.to_not raise_error
+        expect(ScraperWiki.sqliteexecute(query).empty?).to be true
+      end
+    end
+  end
+
   describe '.parse' do
     context 'when filtering' do
       it 'sorts runners alphabetically' do
