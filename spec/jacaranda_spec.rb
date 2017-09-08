@@ -12,6 +12,8 @@ end
 
 describe 'Jacaranda' do
   describe '.remove_old_tables!' do
+    let(:query) { %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table') }
+
     before(:each) do
       create_table_statements.each { |statement| ScraperWiki.sqliteexecute(statement) }
     end
@@ -25,12 +27,8 @@ describe 'Jacaranda' do
       end
 
       it 'removes them' do
-        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
         expect(ScraperWiki.sqliteexecute(query).empty?).to be false
-
-        Jacaranda.remove_old_tables!
-
-        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
+        expect { Jacaranda.remove_old_tables! }.to_not raise_error
         expect(ScraperWiki.sqliteexecute(query).empty?).to be true
       end
     end
@@ -43,12 +41,8 @@ describe 'Jacaranda' do
       end
 
       it 'does nothing' do
-        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
         expect(ScraperWiki.sqliteexecute(query).empty?).to be true
-
         expect { Jacaranda.remove_old_tables! }.to_not raise_error
-
-        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
         expect(ScraperWiki.sqliteexecute(query).empty?).to be true
       end
     end
