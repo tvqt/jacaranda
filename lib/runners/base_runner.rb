@@ -62,7 +62,7 @@ module Jacaranda
       end
 
       def post_day
-        'monday'
+        'Monday'
       end
 
       def morph_live_mode?

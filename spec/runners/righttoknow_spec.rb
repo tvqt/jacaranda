@@ -29,4 +29,38 @@ describe 'RightToKnow' do
       end
     end
   end
+
+  describe 'Runner' do
+    let(:url) { Faker::Internet.url('hooks.slack.com') }
+    before(:each) do
+      set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+    end
+
+    context 'on Wednesday' do
+      before(:each) do
+        time_travel_to("next #{RightToKnow::Runner.post_day}")
+      end
+
+      it 'runs' do
+        expect(RightToKnow::Runner.post_day).to eq('Wednesday')
+
+        VCR.use_cassette('righttoknow_post_to_slack_webhook', match_requests_on: [:host]) do
+          expect(RightToKnow::Runner.run).to be true
+          expect(a_request(:post, url)).to have_been_made.times(1)
+        end
+      end
+    end
+
+    context 'on days other than Wednesday' do
+      let(:days) { (1..6).map { |i| Date.parse(RightToKnow::Runner.post_day) + i } }
+
+      it 'does not run' do
+        days.each do |day|
+          time_travel_to(day)
+          expect(RightToKnow::Runner.run).to be false
+          expect(a_request(:post, url)).to have_been_made.times(0)
+        end
+      end
+    end
+  end
 end

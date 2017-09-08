@@ -60,6 +60,10 @@ module RightToKnow
           RightToKnow::Website.success_text(period: last_fortnight)
         ]
       end
+
+      def post_day
+        'Wednesday'
+      end
     end
   end
 end
