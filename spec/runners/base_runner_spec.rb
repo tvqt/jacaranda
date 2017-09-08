@@ -99,6 +99,10 @@ describe 'Jacaranda' do
       end
 
       context 'not posted in the last fortnight' do
+        before(:each) do
+          time_travel_to("next #{Jacaranda::BaseRunner.post_day}")
+        end
+
         it 'runs the scraper' do
           VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
             expect(Jacaranda::BaseRunner.run).to be true
@@ -107,9 +111,36 @@ describe 'Jacaranda' do
         end
       end
 
+      context 'nominated day of the week' do
+        before(:each) do
+          time_travel_to("next #{Jacaranda::BaseRunner.post_day}")
+        end
+
+        it 'runs the scraper' do
+          vcr_options = { match_requests_on: [:host], allow_playback_repeats: true }
+          VCR.use_cassette('post_to_slack_webhook', vcr_options) do
+            expect(Jacaranda::BaseRunner.run).to be true
+            expect(a_request(:post, url)).to have_been_made.times(1)
+          end
+        end
+      end
+
+      context 'not nominated day of the week' do
+        let(:days) { (1..6).map { |i| Date.parse(Jacaranda::BaseRunner.post_day) + i } }
+
+        it 'does not run the scraper' do
+          days.each do |day|
+            time_travel_to(day)
+            expect(Jacaranda::BaseRunner.run).to be false
+            expect(a_request(:post, url)).to have_been_made.times(0)
+          end
+        end
+      end
+
       after(:each) do
         restore_env
-        ScraperWiki.sqliteexecute('DELETE FROM posts')
+        query = %(SELECT sql FROM sqlite_master where name = 'posts' AND type = 'table')
+        ScraperWiki.sqliteexecute('DELETE FROM posts') if ScraperWiki.sqliteexecute(query).any?
       end
     end
 

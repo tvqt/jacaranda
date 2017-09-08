@@ -9,6 +9,7 @@ module Jacaranda
     class << self
       def run
         validate_environment_variables!
+        return false unless post_day?
 
         if posted_in_last_fortnight?
           puts "[#{name}] We have posted an update during this fortnight."
@@ -49,6 +50,19 @@ module Jacaranda
 
       def posted_in_last_fortnight?
         posts.any? { |post| post['date_posted'] > 1.fortnight.ago }
+      end
+
+      def post_day?
+        if Date.today.strftime('%A').casecmp(post_day).zero?
+          true
+        else
+          puts "[#{name}] Skipping because it's not #{post_day}"
+          false
+        end
+      end
+
+      def post_day
+        'monday'
       end
 
       def morph_live_mode?
