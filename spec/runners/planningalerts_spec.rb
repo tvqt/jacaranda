@@ -60,7 +60,7 @@ describe 'PlanningAlerts' do
       it 'runs' do
         expect(PlanningAlerts::Runner.post_day).to eq('Monday')
 
-        VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
+        VCR.use_cassette('planningalerts_post_to_slack_webhook', match_requests_on: [:host]) do
           expect(PlanningAlerts::Runner.run).to be true
           expect(a_request(:post, url)).to have_been_made.times(1)
         end
