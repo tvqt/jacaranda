@@ -25,7 +25,11 @@ describe 'Jacaranda' do
       end
 
       it 'removes them' do
+        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
+        expect(ScraperWiki.sqliteexecute(query).empty?).to be false
+
         Jacaranda.remove_old_tables!
+
         query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
         expect(ScraperWiki.sqliteexecute(query).empty?).to be true
       end
@@ -39,9 +43,12 @@ describe 'Jacaranda' do
       end
 
       it 'does nothing' do
-        Jacaranda.remove_old_tables!
         query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
-        expect { ScraperWiki.sqliteexecute(query) }.to_not raise_error
+        expect(ScraperWiki.sqliteexecute(query).empty?).to be true
+
+        expect { Jacaranda.remove_old_tables! }.to_not raise_error
+
+        query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
         expect(ScraperWiki.sqliteexecute(query).empty?).to be true
       end
     end
