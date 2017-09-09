@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'Jacaranda' do
   describe 'BaseRunner' do
-    describe '#validate_environment_varables!' do
+    describe '#validate_environment_variables!' do
       let(:envvars) { Jacaranda::BaseRunner.required_environment_variables }
       subject { -> { Jacaranda::BaseRunner.validate_environment_variables! } }
 
@@ -83,9 +83,10 @@ describe 'Jacaranda' do
     describe '#run' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
+      let(:webhook_url_env) { 'MORPH_RUNNERS_JACARANDA_WEBHOOK_URL' }
 
       before(:each) do
-        set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
+        set_environment_variable(webhook_url_env, url)
         set_environment_variable('MORPH_LIVE_MODE', 'true')
       end
 
@@ -147,8 +148,9 @@ describe 'Jacaranda' do
     describe '#post_to_slack' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
+      let(:webhook_url_env) { 'MORPH_RUNNERS_JACARANDA_WEBHOOK_URL' }
 
-      before(:each) { set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url) }
+      before(:each) { set_environment_variable(webhook_url_env, url) }
 
       context 'posting to Slack is successful' do
         it 'POSTs to webhook URL' do

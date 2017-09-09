@@ -8,7 +8,7 @@ module Jacaranda
     # Common validations for all Jacaranda runners
     module Validations
       def required_environment_variables
-        %w[MORPH_LIVE_MODE MORPH_SLACK_CHANNEL_WEBHOOK_URL]
+        ['MORPH_LIVE_MODE', "MORPH_RUNNERS_#{name.upcase}_WEBHOOK_URL"]
       end
 
       def validate_environment_variables!
@@ -157,7 +157,7 @@ module Jacaranda
       end
 
       def post(message)
-        opts = { url: ENV['MORPH_SLACK_CHANNEL_WEBHOOK_URL'] }
+        opts = { url: ENV["MORPH_RUNNERS_#{name.upcase}_WEBHOOK_URL"] }
         opts[:channel] = '#bottesting' unless morph_live_mode?
         if post_message_to_slack(message, opts)
           puts "[#{name}] Recording the message in the database."
