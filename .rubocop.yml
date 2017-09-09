@@ -1,7 +1,3 @@
-Metrics/ClassLength:
-  Max: 120
-  Include:
-    - 'lib/runners/base_runner.rb'
 Metrics/LineLength:
   Max: 110
   Exclude:
