@@ -179,5 +179,51 @@ describe 'Jacaranda' do
         restore_env
       end
     end
+
+    describe '#post_day' do
+      subject { Jacaranda::BaseRunner }
+      let(:runner_name) { subject.to_s.split('::').first.downcase }
+      let(:runner_env_post_day) { "MORPH_RUNNERS_#{runner_name.upcase}_POST_DAY" }
+      let(:days_of_week) { (0..6).map { |i| (Date.today + i).strftime('%A') } }
+
+      it 'returns a default day' do
+        expect(subject.post_day).to_not be nil
+      end
+
+      it 'is set by environment variables', :aggregate_failures do
+        days_of_week.each do |day_name|
+          set_environment_variable(runner_env_post_day, day_name)
+          expect(subject.post_day).to eq(day_name)
+        end
+      end
+
+      it 'validates the day set by environment variables', :aggregate_failures do
+        days_of_week.each do |day_name|
+          set_environment_variable(runner_env_post_day, "zzzz#{day_name}")
+          expect { subject.post_day }.to raise_error(SystemExit)
+        end
+      end
+
+      after(:each) { restore_env }
+    end
+
+    describe '#default_post_day' do
+      context 'getter' do
+        it 'defaults to Monday' do
+          expect(Jacaranda::BaseRunner.default_post_day).to eq('Monday')
+        end
+      end
+
+      context 'setter' do
+        it 'converts to full day name' do
+          Jacaranda::BaseRunner.default_post_day('sun')
+          expect(Jacaranda::BaseRunner.default_post_day).to eq('Sunday')
+        end
+
+        it 'validates day name' do
+          expect { Jacaranda::BaseRunner.default_post_day('zzz') }.to raise_error(SystemExit)
+        end
+      end
+    end
   end
 end

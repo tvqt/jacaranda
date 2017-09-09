@@ -61,16 +61,29 @@ module Jacaranda
         end
       end
 
-      def default_post_day(*day)
-        if day.first
-          @default_post_day = day.first
+      def default_post_day(*args)
+        if args.first
+          @default_post_day = validated_date!(args.first)
         else
           @default_post_day || 'Monday'
         end
       end
 
       def post_day
-        ENV["MORPH_RUNNERS_#{name.upcase}_POST_DAY"] || default_post_day
+        post_day_from_env || default_post_day
+      end
+
+      def post_day_from_env
+        value = ENV["MORPH_RUNNERS_#{name.upcase}_POST_DAY"]
+        return value unless value
+        validated_date!(value)
+      end
+
+      def validated_date!(value)
+        Date.parse(value).strftime('%A')
+      rescue ArgumentError => e
+        puts "[#{name}] #{e.message}. Exiting!"
+        exit(1)
       end
 
       def morph_live_mode?
