@@ -80,7 +80,7 @@ describe 'Jacaranda' do
       after(:each) { ScraperWiki.sqliteexecute('DELETE FROM posts') }
     end
 
-    describe '.run' do
+    describe '#run' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
 
