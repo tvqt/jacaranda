@@ -2,14 +2,6 @@
 
 require 'spec_helper'
 
-def all_requests
-  WebMock::RequestRegistry.instance.requested_signatures.hash.keys
-end
-
-def all_request_bodies
-  all_requests.map { |r| JSON.parse(r.body) }
-end
-
 describe 'Jacaranda' do
   describe '.parse' do
     context 'when filtering' do

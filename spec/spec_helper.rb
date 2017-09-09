@@ -68,3 +68,12 @@ def set_environment_variable(name, value)
 end
 
 def puts(*args); end
+
+def all_requests
+  WebMock::RequestRegistry.instance.requested_signatures.hash.keys
+end
+
+def all_request_bodies
+  all_requests.map { |r| JSON.parse(r.body) }
+end
+
