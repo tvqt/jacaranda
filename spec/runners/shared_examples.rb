@@ -36,3 +36,42 @@ RSpec.shared_examples 'a runner' do
     end
   end
 end
+
+RSpec.shared_examples 'a period' do
+  let(:text) { Faker::Lorem.paragraph(2) }
+  let(:frequency) { self.class.parent.parent.description }
+
+  context 'if record exists' do
+    it do
+      # Fake a successful post
+      Jacaranda::BaseRunner.record_successful_post(text)
+      # Then test
+      expect(Jacaranda::BaseRunner.posted_in_last_period?).to be true
+    end
+  end
+
+  context 'if record does not exist' do
+    it { expect(Jacaranda::BaseRunner.posted_in_last_period?).to be false }
+  end
+
+  context 'if posted outside period' do
+    it nil, :aggregate_failures do
+      10.times do
+        # Fake a successful post
+        text = Faker::RickAndMorty.quote
+        Jacaranda::BaseRunner.record_successful_post(text)
+        # Test now
+        expect(Jacaranda::BaseRunner.posted_in_last_period?).to be true
+        # Test the future
+        time_travel_to(Date.today + duration + 1.day)
+        expect(Jacaranda::BaseRunner.posted_in_last_period?).to be false
+      end
+    end
+  end
+
+  context 'when there is no schema or data' do
+    it do
+      expect(Jacaranda::BaseRunner.posted_in_last_period?).to be false
+    end
+  end
+end

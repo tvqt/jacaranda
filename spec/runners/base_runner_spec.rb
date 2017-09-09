@@ -23,43 +23,34 @@ describe 'Jacaranda' do
       after(:each) { restore_env }
     end
 
-    describe '#posted_in_last_fortnight?' do
-      let(:text) { Faker::Lorem.paragraph(2) }
+    describe '#posted_in_last_period?' do
+      subject { Jacaranda::BaseRunner }
 
-      context 'if record exists' do
-        it do
-          # Fake a successful post
-          Jacaranda::BaseRunner.record_successful_post(text)
-          # Then test
-          expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be true
-        end
+      let(:runner_name) { subject.to_s.split('::').first.downcase }
+      let(:runner_env_post_frequency) { "MORPH_RUNNERS_#{runner_name.upcase}_POST_FREQUENCY" }
+
+      before(:each) do
+        set_environment_variable(runner_env_post_frequency, frequency)
       end
 
-      context 'if record does not exist' do
-        it do
-          expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
-        end
+      context 'weekly' do
+        let(:duration) { 1.week }
+        it_behaves_like 'a period'
       end
 
-      context 'if posted > 14 days ago' do
-        it nil, :aggregate_failures do
-          10.times do
-            # Fake a successful post
-            text = Faker::RickAndMorty.quote
-            Jacaranda::BaseRunner.record_successful_post(text)
-            # Test now
-            expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be true
-            # Test the future
-            time_travel_to(Date.today + 15.days)
-            expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
-          end
-        end
+      context 'fortnightly' do
+        let(:duration) { 2.weeks }
+        it_behaves_like 'a period'
       end
 
-      context 'when there is no schema or data' do
-        it do
-          expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
-        end
+      context 'monthly' do
+        let(:duration) { 1.month }
+        it_behaves_like 'a period'
+      end
+
+      context 'yearly' do
+        let(:duration) { 1.year }
+        it_behaves_like 'a period'
       end
     end
 
@@ -89,7 +80,7 @@ describe 'Jacaranda' do
         set_environment_variable('MORPH_LIVE_MODE', 'true')
       end
 
-      context 'posted in the last fortnight' do
+      context 'posted in the last period' do
         it 'does not run the scraper' do
           # Fake a successful post
           Jacaranda::BaseRunner.record_successful_post(text)
@@ -98,7 +89,7 @@ describe 'Jacaranda' do
         end
       end
 
-      context 'not posted in the last fortnight' do
+      context 'not posted in the last period' do
         before(:each) do
           time_travel_to("next #{Jacaranda::BaseRunner.post_day}")
         end
@@ -161,7 +152,7 @@ describe 'Jacaranda' do
         it 'records the message' do
           VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
             Jacaranda::BaseRunner.post(text)
-            expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be true
+            expect(Jacaranda::BaseRunner.posted_in_last_period?).to be true
           end
         end
       end
@@ -170,7 +161,7 @@ describe 'Jacaranda' do
         it 'does not record the message' do
           VCR.use_cassette('post_to_slack_webhook_but_fails', match_requests_on: [:host]) do
             Jacaranda::BaseRunner.post(text)
-            expect(Jacaranda::BaseRunner.posted_in_last_fortnight?).to be false
+            expect(Jacaranda::BaseRunner.posted_in_last_period?).to be false
           end
         end
       end
