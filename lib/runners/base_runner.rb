@@ -61,8 +61,16 @@ module Jacaranda
         end
       end
 
+      def default_post_day(*day)
+        if day.first
+          @default_post_day = day.first
+        else
+          @default_post_day || 'Monday'
+        end
+      end
+
       def post_day
-        'Monday'
+        ENV["MORPH_RUNNERS_#{name.upcase}_POST_DAY"] || default_post_day
       end
 
       def morph_live_mode?

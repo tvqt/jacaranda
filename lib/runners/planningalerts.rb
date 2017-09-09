@@ -139,6 +139,7 @@ module PlanningAlerts
 
   # The runner for PlanningAlerts
   class Runner < Jacaranda::BaseRunner
+    default_post_day 'Monday'
     class << self
       def build
         [

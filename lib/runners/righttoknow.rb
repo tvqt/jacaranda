@@ -52,6 +52,7 @@ module RightToKnow
 
   # The runner for RightToKnow
   class Runner < Jacaranda::BaseRunner
+    default_post_day 'Wednesday'
     class << self
       def build
         [
@@ -59,10 +60,6 @@ module RightToKnow
           RightToKnow::Website.annotations_text(period: last_fortnight),
           RightToKnow::Website.success_text(period: last_fortnight)
         ]
-      end
-
-      def post_day
-        'Wednesday'
       end
     end
   end
