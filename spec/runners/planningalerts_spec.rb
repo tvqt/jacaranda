@@ -46,37 +46,7 @@ describe 'PlanningAlerts' do
     end
   end
 
-  describe 'Runner' do
-    let(:url) { Faker::Internet.url('hooks.slack.com') }
-    before(:each) do
-      set_environment_variable('MORPH_SLACK_CHANNEL_WEBHOOK_URL', url)
-    end
-
-    context 'on Monday' do
-      before(:each) do
-        time_travel_to("next #{PlanningAlerts::Runner.post_day}")
-      end
-
-      it 'runs' do
-        expect(PlanningAlerts::Runner.post_day).to eq('Monday')
-
-        VCR.use_cassette('planningalerts_post_to_slack_webhook', match_requests_on: [:host]) do
-          expect(PlanningAlerts::Runner.run).to be true
-          expect(a_request(:post, url)).to have_been_made.times(1)
-        end
-      end
-    end
-
-    context 'on days other than Monday' do
-      let(:days) { (1..6).map { |i| Date.parse(PlanningAlerts::Runner.post_day) + i } }
-
-      it 'does not run' do
-        days.each do |day|
-          time_travel_to(day)
-          expect(PlanningAlerts::Runner.run).to be false
-          expect(a_request(:post, url)).to have_been_made.times(0)
-        end
-      end
-    end
+  describe PlanningAlerts::Runner do
+    it_behaves_like 'a runner'
   end
 end

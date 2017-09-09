@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative('../scraper')
+require_relative('runners/shared_examples')
 require 'pry'
 require 'webmock/rspec'
 require 'addressable'
