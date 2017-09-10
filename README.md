@@ -68,7 +68,9 @@ The scraper looks for these environment variables:
 
 * `MORPH_RUNNERS`, a comma separated list of runners to execute. If you don't set this, Jacaranda will execute all known runners. You can use the `--list-runners` option to get a list of all runners Jacaranda knows about.
 * `MORPH_RUNNERS_RIGHTTOKNOW_WEBHOOK_URL`, the webhook URL to post _Right To Know_ messages to Slack. You can get a URL by adding an _Incoming Webhook_ customer integration in your Slack org.
+* `MORPH_RUNNERS_RIGHTTOKNOW_WEBHOOK_CHANNEL`, the Slack channel to post _Right To Know_ messages into.
 * `MORPH_RUNNERS_PLANNINGALERTS_WEBHOOK_URL`, the webhook URL to post _PlanningAlerts_ messages to Slack. You can get a URL by adding an _Incoming Webhook_ customer integration in your Slack org.
+* `MORPH_RUNNERS_PLANNINGALERTS_WEBHOOK_CHANNEL`, the Slack channel to post _PlanningAlerts_ messages into.
 * `MORPH_LIVE_MODE`, to determine if the scraper actually posts to Slack and saves a record of the post to the database. Defaults to `false`.
 
 When developing locally, you can add these environment variables to a [`.env` file](https://github.com/bkeepers/dotenv) so the scraper loads them when it runs:
