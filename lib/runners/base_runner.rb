@@ -10,7 +10,7 @@ module Jacaranda
       def required_environment_variables
         [
           'MORPH_LIVE_MODE',
-          "MORPH_RUNNERS_#{name.upcase}_WEBHOOK_URL",
+          "MORPH_RUNNERS_#{name.upcase}_WEBHOOK_URL"
         ]
       end
 

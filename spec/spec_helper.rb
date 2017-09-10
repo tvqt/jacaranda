@@ -76,4 +76,3 @@ end
 def all_request_bodies
   all_requests.map { |r| JSON.parse(r.body) }
 end
-
