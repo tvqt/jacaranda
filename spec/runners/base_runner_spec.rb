@@ -149,8 +149,25 @@ describe 'Jacaranda' do
       let(:url) { Faker::Internet.url('hooks.slack.com') }
       let(:text) { Faker::Lorem.paragraph(2) }
       let(:webhook_url_env) { 'MORPH_RUNNERS_JACARANDA_WEBHOOK_URL' }
+      let(:webhook_channel_env) { 'MORPH_RUNNERS_JACARANDA_WEBHOOK_CHANNEL' }
 
       before(:each) { set_environment_variable(webhook_url_env, url) }
+
+      context 'with Slack channel override' do
+        let(:channel_name) { '#hello' }
+        before(:each) { set_environment_variable(webhook_channel_env, channel_name) }
+
+        it 'POSTs to specified channel', :aggregate_failures do
+          VCR.use_cassette('post_to_slack_webhook', match_requests_on: [:host]) do
+            Jacaranda::BaseRunner.post(text)
+            expect(a_request(:post, url)).to have_been_made.times(1)
+
+            all_request_bodies.each do |request|
+              expect(request['channel']).to eq(channel_name)
+            end
+          end
+        end
+      end
 
       context 'posting to Slack is successful' do
         it 'POSTs to webhook URL' do
