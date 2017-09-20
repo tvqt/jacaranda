@@ -13,15 +13,9 @@ Pathname.glob(runners).map(&:to_s).each { |runner| require(runner) }
 # Wrapper for all runners
 module Jacaranda
   def self.run(args)
-    remove_old_tables!
     parse(args)
     announce
     runners.each(&:run)
-  end
-
-  def self.remove_old_tables!
-    query = %(SELECT sql FROM sqlite_master where name = 'data' AND type = 'table')
-    ScraperWiki.sqliteexecute('DROP TABLE data') if ScraperWiki.sqliteexecute(query).any?
   end
 
   # rubocop:disable Metrics/MethodLength
