@@ -1,6 +1,6 @@
 # Jacaranda
 
-*A watchful tree and extensible Slack messenger to keep you informed of the use of PlanningAlerts and Right To Know.*
+*A watchful tree and extensible Slack messenger to keep you informed of how your civic tech projects are being used.*
 
 Working on PlanningAlerts over the last year we’ve noticed that:
 
