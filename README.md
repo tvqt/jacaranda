@@ -2,6 +2,11 @@
 
 *A watchful tree and extensible Slack messenger to keep you informed of how your civic tech projects are being used.*
 
+> Not everything that can be counted counts, and not everything that counts can be counted.
+> (Albert Einstine, on the wall of his study in Princeton. Quoted in *Can We Know Better?*, Robert Chambers, 2017)
+
+This project is an attempt to get useful information about how a project is used, to the people who maintain, run, and build it.
+
 Working on PlanningAlerts over the last year we’ve noticed that:
 
 * We don’t have an accurate idea of the impact of PlanningAlerts, how many people are using it, or the rate a which this is changing; and
