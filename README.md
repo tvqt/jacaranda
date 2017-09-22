@@ -7,7 +7,7 @@
 
 This project is an attempt to get useful information about how a project is used, to the people who maintain, run, and build it.
 
-Working on PlanningAlerts over the last year we’ve noticed that:
+While working on PlanningAlerts we’ve noticed that:
 
 * We don’t have an accurate idea of the impact of PlanningAlerts, how many people are using it, or the rate a which this is changing; and
 * We feel more energised in our work when we get feedback about it’s use and impact.
